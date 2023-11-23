@@ -63,3 +63,7 @@ jacocoTestReport {
         html.required.set(true)
     }
 }
+
+jar {
+    enabled = false
+}
