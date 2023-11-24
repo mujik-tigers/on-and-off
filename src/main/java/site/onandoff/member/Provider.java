@@ -1,5 +1,7 @@
 package site.onandoff.member;
 
 public enum Provider {
-    KAKAO, GOOGLE, NAVER, LOCAL
+
+	KAKAO, GOOGLE, NAVER, LOCAL
+
 }
