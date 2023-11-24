@@ -1,14 +1,12 @@
-name: Report PR Test and Deploy
+name: Report PR Test
 
 on:
   pull_request:
     branches:
       - dev
-      - release
   push:
     branches:
       - dev
-      - release
 
 permissions:
   checks: write
