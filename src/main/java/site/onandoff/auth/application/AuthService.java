@@ -18,13 +18,11 @@ public class AuthService {
 	private final AuthManager authManager;
 	private final TokenManager tokenManager;
 
-	@Transactional
 	public AuthenticationTokenPair login(LoginData loginData) {
 		Member member = authManager.authenticateLoginData(loginData);
 		return tokenManager.issueTokenPair(member.getId());
 	}
 
-	@Transactional
 	public ReissuedAccessToken reissueAccessToken(Account account) {
 		return tokenManager.issueAccessToken(account.getId());
 	}
