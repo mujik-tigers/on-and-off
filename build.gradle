@@ -36,7 +36,7 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
 
     // Logging
-    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+//    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'
@@ -49,6 +49,9 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.2'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.2'
     implementation 'io.jsonwebtoken:jjwt-api:0.12.2'
+
+    // Password Encoder
+    implementation 'org.mindrot:jbcrypt:0.4'
 }
 
 tasks.named('bootBuildImage') {
