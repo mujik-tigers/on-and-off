@@ -18,7 +18,6 @@ public class AuthManager {
 	private static final String AUTHORIZATION_PREFIX = "Bearer ";
 
 	private final MemberRepository memberRepository;
-	private final PasswordEncoder passwordEncoder;
 
 	public String validateAuthorizationHeader(String authorizationHeader) {
 		if (authorizationHeader == null || !authorizationHeader.startsWith(AUTHORIZATION_PREFIX)) {
@@ -32,7 +31,7 @@ public class AuthManager {
 		Member member = memberRepository.findByEmailAndProvider(loginData.getEmail(), Provider.LOCAL)
 			.orElseThrow(InvalidLoginException::new);
 
-		if (passwordEncoder.isMatch(loginData.getPassword(), member.getPassword())) {
+		if (PasswordEncoder.isMatch(loginData.getPassword(), member.getPassword())) {
 			return member;
 		}
 
