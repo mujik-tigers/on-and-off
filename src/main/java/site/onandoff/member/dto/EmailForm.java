@@ -25,11 +25,8 @@ public @interface EmailForm {
 	Class<? extends Payload>[] payload() default {};
 
 	class EmailFormValidator implements ConstraintValidator<EmailForm, String> {
-		private final String REGEX_EMAIL = "[a-z0-9][a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
-			// 소문자 알파벳이나 숫자로 시작하는 local part
-
-			+ "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])";
-		// 서브 도메인, 도메인, 최상위 도메인
+		private final String REGEX_EMAIL = "^[0-9a-z-A-z]([\\-.\\w]*[0-9a-zA-Z\\-_+])*" // 소문자 알파벳이나 숫자로 시작하는 local part
+			+ "@([0-9a-zA-Z][\\-\\w]*[0-9a-zA-Z]\\.)+[a-zA-Z]{2,9}$";    // 서브 도메인, 도메인, 최상위 도메인
 
 		private Pattern emailRegex = Pattern.compile(REGEX_EMAIL);
 
