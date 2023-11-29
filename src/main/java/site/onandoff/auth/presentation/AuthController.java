@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import site.onandoff.auth.Account;
 import site.onandoff.auth.application.AuthService;
@@ -21,7 +22,7 @@ public class AuthController {
 	private final AuthService authService;
 
 	@PostMapping("/login")
-	public ApiResponse<AuthenticationTokens> login(@RequestBody LoginData loginData) {
+	public ApiResponse<AuthenticationTokens> login(@RequestBody @Valid LoginData loginData) {
 		return ApiResponse.ok(LOGIN_SUCCESS.getMessage(), authService.login(loginData));
 	}
 
