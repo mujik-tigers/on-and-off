@@ -7,8 +7,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.regex.Pattern;
 
-import org.springframework.util.StringUtils;
-
 import jakarta.validation.Constraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -37,11 +35,7 @@ public @interface EmailForm {
 
 		@Override
 		public boolean isValid(String emailInput, ConstraintValidatorContext context) {
-			if (StringUtils.isEmpty(emailInput)) {
-				return true;
-			} else {
-				return emailRegex.matcher(emailInput).matches();
-			}
+			return emailRegex.matcher(emailInput).matches();
 		}
 	}
 

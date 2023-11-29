@@ -36,9 +36,7 @@ class SignUpFormTest {
 
 		// then
 		assertThat(violations.size()).isEqualTo(1);
-		for (ConstraintViolation<SignUpForm> violation : violations) {
-			assertThat(violation.getMessage()).isEqualTo("이메일이 양식에 맞지 않습니다.");
-		}
+		assertThat(violations.iterator().next().getMessage()).isEqualTo("이메일이 양식에 맞지 않습니다.");
 	}
 
 	@Test
