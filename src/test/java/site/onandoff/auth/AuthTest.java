@@ -212,4 +212,25 @@ class AuthTest extends IntegrationTestSupport {
 				)
 			));
 	}
+
+	@Test
+	@DisplayName("인증 실패 : Authorization Header 오류")
+	void requestWithInvalidAuthorizationHeader() throws Exception {
+		// when & then
+		mockMvc.perform(post("/reissue")
+				.header(HttpHeaders.AUTHORIZATION, "Bear "))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andDo(document("invalid-authorization-header",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				responseFields(
+					fieldWithPath("code").type(JsonFieldType.NUMBER).description("코드"),
+					fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
+					fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
+					fieldWithPath("data").type(JsonFieldType.NULL).description("응답 데이터")
+				)
+			));
+	}
+
 }
