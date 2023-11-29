@@ -13,7 +13,8 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
-import site.onandoff.auth.dto.AuthenticationTokens;
+import site.onandoff.auth.dto.AuthenticationTokenPair;
+import site.onandoff.auth.dto.ReissuedAccessToken;
 import site.onandoff.exception.auth.ExpiredTokenException;
 import site.onandoff.exception.auth.InvalidTokenException;
 
@@ -23,12 +24,18 @@ public class TokenManager {
 
 	private final TokenProperties tokenProperties;
 
-	public AuthenticationTokens issueTokens(Long id) {
+	public AuthenticationTokenPair issueTokenPair(Long id) {
 		String accessToken = generateToken(Map.of("id", id, "refresh", false),
 			tokenProperties.getAccessTokenDuration());
 		String refreshToken = generateToken(Map.of("id", id, "refresh", true),
 			tokenProperties.getRefreshTokenDuration());
-		return new AuthenticationTokens(accessToken, refreshToken);
+		return new AuthenticationTokenPair(accessToken, refreshToken);
+	}
+
+	public ReissuedAccessToken issueAccessToken(Long id) {
+		String accessToken = generateToken(Map.of("id", id, "refresh", false),
+			tokenProperties.getAccessTokenDuration());
+		return new ReissuedAccessToken(accessToken);
 	}
 
 	private String generateToken(Map<String, Object> claims, long duration) {

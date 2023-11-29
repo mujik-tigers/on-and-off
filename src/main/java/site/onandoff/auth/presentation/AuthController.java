@@ -10,8 +10,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import site.onandoff.auth.Account;
 import site.onandoff.auth.application.AuthService;
-import site.onandoff.auth.dto.AuthenticationTokens;
+import site.onandoff.auth.dto.AuthenticationTokenPair;
 import site.onandoff.auth.dto.LoginData;
+import site.onandoff.auth.dto.ReissuedAccessToken;
 import site.onandoff.util.ApiResponse;
 import site.onandoff.util.Login;
 
@@ -22,14 +23,13 @@ public class AuthController {
 	private final AuthService authService;
 
 	@PostMapping("/login")
-	public ApiResponse<AuthenticationTokens> login(@RequestBody @Valid LoginData loginData) {
+	public ApiResponse<AuthenticationTokenPair> login(@RequestBody @Valid LoginData loginData) {
 		return ApiResponse.ok(LOGIN_SUCCESS.getMessage(), authService.login(loginData));
 	}
 
 	@PostMapping("/reissue")
-	public ApiResponse<AuthenticationTokens> reissueTokens(@Login Account account) {
-		return ApiResponse.ok(REISSUE_TOKENS_SUCCESS.getMessage(),
-			authService.reissueTokens(account));
+	public ApiResponse<ReissuedAccessToken> reissueAccessToken(@Login Account account) {
+		return ApiResponse.ok(REISSUE_TOKENS_SUCCESS.getMessage(), authService.reissueAccessToken(account));
 	}
 
 }

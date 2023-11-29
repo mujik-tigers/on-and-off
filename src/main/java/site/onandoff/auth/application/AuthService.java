@@ -5,8 +5,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import site.onandoff.auth.Account;
-import site.onandoff.auth.dto.AuthenticationTokens;
+import site.onandoff.auth.dto.AuthenticationTokenPair;
 import site.onandoff.auth.dto.LoginData;
+import site.onandoff.auth.dto.ReissuedAccessToken;
 import site.onandoff.member.Member;
 
 @Service
@@ -18,14 +19,14 @@ public class AuthService {
 	private final TokenManager tokenManager;
 
 	@Transactional
-	public AuthenticationTokens login(LoginData loginData) {
+	public AuthenticationTokenPair login(LoginData loginData) {
 		Member member = authManager.authenticateLoginData(loginData);
-		return tokenManager.issueTokens(member.getId());
+		return tokenManager.issueTokenPair(member.getId());
 	}
 
 	@Transactional
-	public AuthenticationTokens reissueTokens(Account account) {
-		return tokenManager.issueTokens(account.getId());
+	public ReissuedAccessToken reissueAccessToken(Account account) {
+		return tokenManager.issueAccessToken(account.getId());
 	}
 
 }
