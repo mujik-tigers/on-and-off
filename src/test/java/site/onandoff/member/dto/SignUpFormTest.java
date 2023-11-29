@@ -97,4 +97,21 @@ class SignUpFormTest {
 		assertThat(violations.size()).isEqualTo(1);
 		assertThat(violations.iterator().next().getMessage()).isEqualTo("이메일 길이는 62자 이하입니다.");
 	}
+
+	@Test
+	@DisplayName("DB를 사용하지 않는 검증 먼저 수행한 후, DB를 사용하는 검증을 수행하기 때문에 글자수 위반 violation과 중복 유저 violation 이 같이 발생하지 않는다.")
+	void DBlessGroupFirstThenDBGroup() throws Exception {
+		// given
+		String longEmailInput = "hellohellohellohellohellohellohellohellohellohellohellohello@naver.com";
+		memberRepository.save(new Member(longEmailInput, "hoon", "1234", Provider.LOCAL));
+		SignUpForm signUpForm = new SignUpForm(longEmailInput, "hyun", "1234");
+
+		// when
+		Set<ConstraintViolation<SignUpForm>> violations = validator.validate(signUpForm);
+
+		// then
+		assertThat(violations.size()).isEqualTo(1);
+		assertThat(violations.iterator().next().getMessage()).isEqualTo("이메일 길이는 62자 이하입니다.");
+	}
+
 }
