@@ -31,7 +31,7 @@ class SignUpFormTest {
 	void wrongInputForm() throws Exception {
 		// given
 		String invalidEmailInput = "it's fake email";
-		SignUpForm signUpForm = new SignUpForm(invalidEmailInput, "hyun", "1234");
+		SignUpForm signUpForm = new SignUpForm(invalidEmailInput, "hyun", "1234567a!");
 
 		// when
 		Set<ConstraintViolation<SignUpForm>> violations = validator.validate(signUpForm);
@@ -46,7 +46,7 @@ class SignUpFormTest {
 	void correctInputForm() throws Exception {
 		// given
 		String invalidEmailInput = "ghkdgus29@codesquand.ac.kr";
-		SignUpForm signUpForm = new SignUpForm(invalidEmailInput, "hyun", "1234");
+		SignUpForm signUpForm = new SignUpForm(invalidEmailInput, "hyun", "1234567a!");
 
 		// when
 		Set<ConstraintViolation<SignUpForm>> violations = validator.validate(signUpForm);
@@ -60,7 +60,7 @@ class SignUpFormTest {
 	void uniqueEmailInput() throws Exception {
 		// given
 		String uniqueEmailInput = "ghkdgus29@codesquand.ac.kr";
-		SignUpForm signUpForm = new SignUpForm(uniqueEmailInput, "hyun", "1234");
+		SignUpForm signUpForm = new SignUpForm(uniqueEmailInput, "hyun", "1234567a!");
 
 		// when
 		Set<ConstraintViolation<SignUpForm>> violations = validator.validate(signUpForm);
@@ -75,7 +75,7 @@ class SignUpFormTest {
 		// given
 		String duplicateEmailInput = "ghkdgus29@codesquand.ac.kr";
 		memberRepository.save(new Member(duplicateEmailInput, "hoon", "1234", Provider.LOCAL));
-		SignUpForm signUpForm = new SignUpForm(duplicateEmailInput, "hyun", "1234");
+		SignUpForm signUpForm = new SignUpForm(duplicateEmailInput, "hyun", "1234567a!");
 
 		// when
 		Set<ConstraintViolation<SignUpForm>> violations = validator.validate(signUpForm);
@@ -90,7 +90,7 @@ class SignUpFormTest {
 	void shortEmailInput() throws Exception {
 		// given
 		String longEmailInput = "hellohellohellohellohellohellohellohellohellohellohellohello@naver.com";
-		SignUpForm signUpForm = new SignUpForm(longEmailInput, "hyun", "1234");
+		SignUpForm signUpForm = new SignUpForm(longEmailInput, "hyun", "1234567a!");
 
 		// when
 		Set<ConstraintViolation<SignUpForm>> violations = validator.validate(signUpForm);
@@ -105,8 +105,8 @@ class SignUpFormTest {
 	void DBlessGroupFirstThenDBGroup() throws Exception {
 		// given
 		String longEmailInput = "hellohellohellohellohellohellohellohellohellohellohellohello@naver.com";
-		memberRepository.save(new Member(longEmailInput, "hoon", "1234", Provider.LOCAL));
-		SignUpForm signUpForm = new SignUpForm(longEmailInput, "hyun", "1234");
+		memberRepository.save(new Member(longEmailInput, "hoon", "1234567a!", Provider.LOCAL));
+		SignUpForm signUpForm = new SignUpForm(longEmailInput, "hyun", "1234567a!");
 
 		// when
 		Set<ConstraintViolation<SignUpForm>> violations = validator.validate(signUpForm);
@@ -116,4 +116,38 @@ class SignUpFormTest {
 		assertThat(violations.iterator().next().getMessage()).isEqualTo("이메일 길이는 62자 이하입니다.");
 	}
 
+	@Test
+	@DisplayName("비밀번호는 영문자, 숫자, 특수문자를 포함하는 8-16자 문자열이어야 한다.")
+	void invalidPassword() throws Exception {
+		// given
+		String shortPassword = "123a!";
+		SignUpForm shortPasswordForm = new SignUpForm("ghkdgus29@naver.com", "hyun", shortPassword);
+
+		String longPassword = "1235678901234567890a!";
+		SignUpForm longPasswordForm = new SignUpForm("ghkdgus29@naver.com", "hyun", longPassword);
+
+		String invalidPassword = "1234567890";
+		SignUpForm invalidPasswordForm = new SignUpForm("ghkdgus29@naver.com", "hyun", invalidPassword);
+
+		String validPassword = "1234567a!";
+		SignUpForm validPasswordForm = new SignUpForm("ghkdgus29@naver.com", "hyun", validPassword);
+
+		// when
+		Set<ConstraintViolation<SignUpForm>> shortPasswordViolations = validator.validate(shortPasswordForm);
+		Set<ConstraintViolation<SignUpForm>> longPasswordViolations = validator.validate(longPasswordForm);
+		Set<ConstraintViolation<SignUpForm>> invalidPasswordViolations = validator.validate(invalidPasswordForm);
+		Set<ConstraintViolation<SignUpForm>> validPasswordViolations = validator.validate(validPasswordForm);
+
+		// then
+		assertThat(shortPasswordViolations.iterator().next().getMessage())
+			.isEqualTo(longPasswordViolations.iterator().next().getMessage())
+			.isEqualTo(invalidPasswordViolations.iterator().next().getMessage());
+
+		assertThat(shortPasswordViolations.size())
+			.isEqualTo(longPasswordViolations.size())
+			.isEqualTo(invalidPasswordViolations.size())
+			.isEqualTo(1);
+
+		assertThat(validPasswordViolations).isEmpty();
+	}
 }

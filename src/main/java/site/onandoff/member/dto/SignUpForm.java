@@ -8,19 +8,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@GroupSequence({SignUpForm.class, DBlessGroup.class, DBGroup.class})
+@GroupSequence({SignUpForm.class, DBGroup.class})
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 public class SignUpForm {
 
-	@EmailForm(groups = DBlessGroup.class)
-	@EmailSize(groups = DBlessGroup.class)
+	@EmailForm
+	@EmailSize
 	@EmailDuplicateCheck(groups = DBGroup.class)
 	private String email;
 
 	private String nickname;
+
+	@PasswordForm
 	private String password;
 
 }
