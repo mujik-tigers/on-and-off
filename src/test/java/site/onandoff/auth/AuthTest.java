@@ -112,6 +112,36 @@ class AuthTest extends IntegrationTestSupport {
 	}
 
 	@Test
+	@DisplayName("일반 로그인 : 입력 형식 오류")
+	void loginValidFail() throws Exception {
+		// given
+		LoginData loginData = new LoginData("yeon@email.c", "test1234");
+
+		// when & then
+		mockMvc.perform(post("/login")
+				.content(objectMapper.writeValueAsString(loginData))
+				.contentType(MediaType.APPLICATION_JSON))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andDo(document("login-valid-fail",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				requestFields(
+					fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+					fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호")
+				),
+				responseFields(
+					fieldWithPath("code").type(JsonFieldType.NUMBER).description("코드"),
+					fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
+					fieldWithPath("message").type(JsonFieldType.NULL).description("메시지"),
+					fieldWithPath("data").type(JsonFieldType.ARRAY).description("응답 데이터"),
+					fieldWithPath("data[].field").type(JsonFieldType.STRING).description("필드"),
+					fieldWithPath("data[].message").type(JsonFieldType.STRING).description("에러 메시지")
+				)
+			));
+	}
+
+	@Test
 	@DisplayName("토큰 재발급 : 성공")
 	void reissueSuccess() throws Exception {
 		// given
