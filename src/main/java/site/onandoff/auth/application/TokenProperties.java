@@ -1,12 +1,10 @@
 package site.onandoff.auth.application;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Component
 @ConfigurationProperties("jwt")
 @RequiredArgsConstructor
 @Getter
