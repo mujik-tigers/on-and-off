@@ -14,6 +14,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import jakarta.validation.Payload;
 import site.onandoff.member.infrastructure.MemberRepository;
+import site.onandoff.util.encryption.AES256Manager;
 
 @Documented
 @Constraint(validatedBy = EmailDuplicateCheck.EmailDuplicateValidator.class)
@@ -30,15 +31,18 @@ public @interface EmailDuplicateCheck {
 	@Component
 	class EmailDuplicateValidator implements ConstraintValidator<EmailDuplicateCheck, String> {
 		private MemberRepository memberRepository;
+		private AES256Manager aes256Manager;
 
 		@Autowired
-		public void setMemberRepository(MemberRepository memberRepository) {
+		public void setMemberRepository(MemberRepository memberRepository, AES256Manager aes256Manager) {
 			this.memberRepository = memberRepository;
+			this.aes256Manager = aes256Manager;
 		}
 
 		@Override
 		public boolean isValid(String emailInput, ConstraintValidatorContext context) {
-			return !memberRepository.existsByEmail(emailInput);
+			String encryptedEmailInput = aes256Manager.encrypt(emailInput);
+			return !memberRepository.existsByEmail(encryptedEmailInput);
 		}
 
 	}
