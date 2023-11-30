@@ -1,4 +1,4 @@
-package site.onandoff.member.dto;
+package site.onandoff.member.validator;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
