@@ -2,6 +2,7 @@ package site.onandoff.member.application;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import site.onandoff.member.Member;
 import site.onandoff.member.Provider;
@@ -12,6 +13,7 @@ import site.onandoff.util.encryption.AES256Manager;
 import site.onandoff.util.encryption.BcryptManager;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MemberService {
 

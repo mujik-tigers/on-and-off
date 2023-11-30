@@ -5,10 +5,10 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class AES256ManagerTest {
+import site.onandoff.IntegrationTestSupport;
+
+class AES256ManagerTest extends IntegrationTestSupport {
 
 	@Autowired
 	private AES256Manager aes256Manager;

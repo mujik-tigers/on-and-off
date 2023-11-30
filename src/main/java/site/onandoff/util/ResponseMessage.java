@@ -2,7 +2,12 @@ package site.onandoff.util;
 
 public enum ResponseMessage {
 
-	SIGNUP_SUCCESS("회원가입에 성공했습니다.");
+	// Member
+	SIGNUP_SUCCESS("회원가입에 성공했습니다."),
+
+	// Auth
+	LOGIN_SUCCESS("로그인에 성공했습니다"),
+	REISSUE_TOKENS_SUCCESS("토큰 재발급에 성공했습니다");
 
 	private final String message;
 
@@ -11,7 +16,7 @@ public enum ResponseMessage {
 	}
 
 	public String getMessage() {
-		return message;
+		return this.message;
 	}
 
 }

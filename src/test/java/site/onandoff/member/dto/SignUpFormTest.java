@@ -7,19 +7,16 @@ import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
+import site.onandoff.IntegrationTestSupport;
 import site.onandoff.member.Member;
 import site.onandoff.member.Provider;
 import site.onandoff.member.infrastructure.MemberRepository;
 import site.onandoff.util.encryption.AES256Manager;
 
-@SpringBootTest
-@Transactional
-class SignUpFormTest {
+class SignUpFormTest extends IntegrationTestSupport {
 
 	@Autowired
 	private Validator validator;

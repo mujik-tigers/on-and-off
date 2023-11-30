@@ -43,4 +43,8 @@ public class Member extends EntityHistory {
 		return id;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
 }
