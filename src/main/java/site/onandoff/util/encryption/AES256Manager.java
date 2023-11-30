@@ -46,14 +46,16 @@ public class AES256Manager {
 	 *
 	 * Base64 인코딩한 암호화 된 문자열을 반환한다.
 	 */
-	public String encrypt(String plainInformation) throws
-		IllegalBlockSizeException,
-		BadPaddingException,
-		InvalidAlgorithmParameterException,
-		InvalidKeyException {
+	public String encrypt(String plainInformation) {
+		byte[] encryptedInformation = null;
+		try {
+			cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParameterSpec);
+			encryptedInformation = cipher.doFinal(plainInformation.getBytes(StandardCharsets.UTF_8));
+		} catch (InvalidAlgorithmParameterException | InvalidKeyException |
+				 IllegalBlockSizeException | BadPaddingException e) {
+			throw new RuntimeException(e);
+		}
 
-		cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParameterSpec);
-		byte[] encryptedInformation = cipher.doFinal(plainInformation.getBytes(StandardCharsets.UTF_8));
 		return Base64.getEncoder().encodeToString(encryptedInformation);
 	}
 
@@ -68,15 +70,17 @@ public class AES256Manager {
 	 *
 	 * 평문을 반환한다.
 	 */
-	public String decrypt(String encryptedInformation) throws
-		InvalidAlgorithmParameterException,
-		InvalidKeyException,
-		IllegalBlockSizeException,
-		BadPaddingException {
+	public String decrypt(String encryptedInformation) {
+		byte[] decodedPlainInformation = null;
+		try {
+			cipher.init(Cipher.DECRYPT_MODE, keySpec, ivParameterSpec);
+			byte[] decodedAndEncryptedInformation = Base64.getDecoder().decode(encryptedInformation);
+			decodedPlainInformation = cipher.doFinal(decodedAndEncryptedInformation);
+		} catch (InvalidAlgorithmParameterException | InvalidKeyException |
+				 IllegalBlockSizeException | BadPaddingException e) {
+			throw new RuntimeException(e);
+		}
 
-		cipher.init(Cipher.DECRYPT_MODE, keySpec, ivParameterSpec);
-		byte[] decodedAndEncryptedInformation = Base64.getDecoder().decode(encryptedInformation);
-		byte[] decodedPlainInformation = cipher.doFinal(decodedAndEncryptedInformation);
 		return new String(decodedPlainInformation, StandardCharsets.UTF_8);
 	}
 
