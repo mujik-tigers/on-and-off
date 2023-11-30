@@ -32,10 +32,15 @@ public class Member extends EntityHistory {
 	private Provider provider;
 
 	public Member(String email, String nickname, String password, Provider provider) {
+		super(nickname);
 		this.email = email;
 		this.nickname = nickname;
 		this.password = password;
 		this.provider = provider;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 }

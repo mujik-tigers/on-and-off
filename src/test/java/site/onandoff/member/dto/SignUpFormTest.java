@@ -15,6 +15,7 @@ import jakarta.validation.Validator;
 import site.onandoff.member.Member;
 import site.onandoff.member.Provider;
 import site.onandoff.member.infrastructure.MemberRepository;
+import site.onandoff.util.encryption.AES256Manager;
 
 @SpringBootTest
 @Transactional
@@ -25,6 +26,9 @@ class SignUpFormTest {
 
 	@Autowired
 	private MemberRepository memberRepository;
+
+	@Autowired
+	private AES256Manager aes256Manager;
 
 	@Test
 	@DisplayName("만약 올바르지 않은 이메일 형식을 입력하면 이메일 형식 관련 violation 을 반환한다.")
@@ -74,7 +78,7 @@ class SignUpFormTest {
 	void duplicateEmailInput() throws Exception {
 		// given
 		String duplicateEmailInput = "ghkdgus29@codesquand.ac.kr";
-		memberRepository.save(new Member(duplicateEmailInput, "hoon", "1234", Provider.LOCAL));
+		memberRepository.save(new Member(aes256Manager.encrypt(duplicateEmailInput), "hoon", "1234", Provider.LOCAL));
 		SignUpForm signUpForm = new SignUpForm(duplicateEmailInput, "hyun", "1234567a!");
 
 		// when
@@ -202,5 +206,5 @@ class SignUpFormTest {
 		assertThat(violations.size()).isEqualTo(1);
 		assertThat(violations.iterator().next().getMessage()).isEqualTo("이미 존재하는 닉네임입니다.");
 	}
-	
+
 }

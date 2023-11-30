@@ -11,9 +11,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EntityHistory {
 
 	@CreatedBy
@@ -30,4 +33,8 @@ public class EntityHistory {
 	@LastModifiedDate
 	private LocalDateTime modifiedAt;
 
+	public EntityHistory(String createdBy) {
+		this.createdBy = createdBy;
+		this.modifiedBy = createdBy;
+	}
 }
