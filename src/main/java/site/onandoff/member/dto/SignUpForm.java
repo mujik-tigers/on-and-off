@@ -1,14 +1,12 @@
 package site.onandoff.member.dto;
 
-import static site.onandoff.member.dto.ValidationGroups.*;
-
 import jakarta.validation.GroupSequence;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@GroupSequence({SignUpForm.class, DBGroup.class})
+@GroupSequence({SignUpForm.class, DBUsing.class})
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -17,9 +15,11 @@ public class SignUpForm {
 
 	@EmailForm
 	@EmailSize
-	@EmailDuplicateCheck(groups = DBGroup.class)
+	@EmailDuplicateCheck(groups = DBUsing.class)
 	private String email;
 
+	@NicknameForm
+	@NicknameDuplicateCheck(groups = DBUsing.class)
 	private String nickname;
 
 	@PasswordForm
