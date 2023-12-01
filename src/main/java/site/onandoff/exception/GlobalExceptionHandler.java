@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import site.onandoff.util.ApiResponse;
 
 @RestControllerAdvice
@@ -36,6 +38,24 @@ public class GlobalExceptionHandler {
 					fieldError.put("field", error.getKey());
 					fieldError.put("message", error.getValue().stream()
 						.map(DefaultMessageSourceResolvable::getDefaultMessage)
+						.collect(Collectors.joining(", ")));
+					return fieldError;
+				})
+		);
+	}
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ApiResponse<Object> handleBindException(ConstraintViolationException exception) {
+		return ApiResponse.of(HttpStatus.BAD_REQUEST, null,
+			exception.getConstraintViolations().stream()
+				.collect(Collectors.groupingBy(v -> v.getPropertyPath().toString()))
+				.entrySet().stream()
+				.map(error -> {
+					Map<String, Object> fieldError = new HashMap<>();
+					fieldError.put("field", error.getKey());
+					fieldError.put("message", error.getValue().stream()
+						.map(ConstraintViolation::getMessage)
 						.collect(Collectors.joining(", ")));
 					return fieldError;
 				})
