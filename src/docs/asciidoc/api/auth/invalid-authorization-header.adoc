@@ -1,0 +1,12 @@
+[[invalid-authorization-header]]
+== 인증 실패 : Authorization Header 오류
+
+==== HTTP Request
+
+include::{snippets}/invalid-authorization-header/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/invalid-authorization-header/http-response.adoc[]
+include::{snippets}/invalid-authorization-header/response-fields.adoc[]
+

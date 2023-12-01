@@ -1,0 +1,11 @@
+[[login-success]]
+== 일반 로그인 : 성공
+
+==== HTTP Request
+include::{snippets}/login-success/http-request.adoc[]
+include::{snippets}/login-success/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/login-success/http-response.adoc[]
+include::{snippets}/login-success/response-fields.adoc[]
+

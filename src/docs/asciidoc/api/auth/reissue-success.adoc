@@ -1,0 +1,12 @@
+[[reissue-success]]
+== 토큰 재발급 : 성공
+
+==== HTTP Request
+
+include::{snippets}/reissue-success/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/reissue-success/http-response.adoc[]
+include::{snippets}/reissue-success/response-fields.adoc[]
+
