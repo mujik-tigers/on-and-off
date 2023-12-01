@@ -1,0 +1,11 @@
+[[signup-success]]
+== 회원 가입 : 성공
+
+==== HTTP Request
+include::{snippets}/signup-success/http-request.adoc[]
+include::{snippets}/signup-success/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/signup-success/http-response.adoc[]
+include::{snippets}/signup-success/response-fields.adoc[]
+

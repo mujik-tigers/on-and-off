@@ -18,3 +18,9 @@ include::api/auth/reissue-success.adoc[]
 include::api/auth/reissue-fail.adoc[]
 include::api/auth/invalid-authorization-header.adoc[]
 include::api/auth/expired-token.adoc[]
+
+[[Member-API]]
+== Member API
+
+include::api/member/signup-success.adoc[]
+include::api/member/signup-fail.adoc[]
