@@ -16,6 +16,9 @@ import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import site.onandoff.exception.CustomException;
+import site.onandoff.exception.ErrorType;
+
 @Component
 public class AES256Manager {
 
@@ -51,7 +54,7 @@ public class AES256Manager {
 			encryptedInformation = cipher.doFinal(plainInformation.getBytes(StandardCharsets.UTF_8));
 		} catch (InvalidAlgorithmParameterException | InvalidKeyException |
 				 IllegalBlockSizeException | BadPaddingException e) {
-			throw new RuntimeException(e);
+			throw new CustomException(ErrorType.AES256_SETTING_ERROR);
 		}
 
 		return Base64.getEncoder().encodeToString(encryptedInformation);
@@ -76,7 +79,7 @@ public class AES256Manager {
 			decodedPlainInformation = cipher.doFinal(decodedAndEncryptedInformation);
 		} catch (InvalidAlgorithmParameterException | InvalidKeyException |
 				 IllegalBlockSizeException | BadPaddingException e) {
-			throw new RuntimeException(e);
+			throw new CustomException(ErrorType.AES256_SETTING_ERROR);
 		}
 
 		return new String(decodedPlainInformation, StandardCharsets.UTF_8);
