@@ -6,9 +6,12 @@ import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import site.onandoff.exception.member.MemberNotFoundException;
 import site.onandoff.member.Member;
 import site.onandoff.member.Provider;
+import site.onandoff.member.dto.ModifiedMember;
 import site.onandoff.member.dto.SignUpSuccessResponse;
+import site.onandoff.member.dto.UniqueNicknameChangeForm;
 import site.onandoff.member.dto.UniqueSignUpForm;
 import site.onandoff.member.infrastructure.MemberRepository;
 import site.onandoff.util.encryption.AES256Manager;
@@ -36,4 +39,12 @@ public class MemberService {
 
 		return new SignUpSuccessResponse(savedMember.getId());
 	}
+
+	public ModifiedMember modifyNickname(UniqueNicknameChangeForm nicknameChangeForm) {
+		Member member = memberRepository.findById(nicknameChangeForm.getId()).orElseThrow(MemberNotFoundException::new);
+		member.modifyNickname(nicknameChangeForm.getNickname());
+
+		return new ModifiedMember(member.getId(), member.getNickname());
+	}
+
 }
