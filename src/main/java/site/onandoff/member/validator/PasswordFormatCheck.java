@@ -32,7 +32,7 @@ public @interface PasswordFormatCheck {
 
 		@Override
 		public boolean isValid(String passwordInput, ConstraintValidatorContext context) {
-			return passwordRegex.matcher(passwordInput).matches();
+			return passwordInput != null && passwordRegex.matcher(passwordInput).matches();
 		}
 
 	}
