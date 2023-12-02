@@ -1,4 +1,4 @@
-package site.onandoff.auth;
+package site.onandoff.auth.presentation;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
@@ -16,11 +16,11 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 
 import site.onandoff.RestDocsSupport;
+import site.onandoff.auth.Account;
 import site.onandoff.auth.application.AuthService;
 import site.onandoff.auth.dto.AuthenticationTokenPair;
 import site.onandoff.auth.dto.LoginData;
 import site.onandoff.auth.dto.ReissuedAccessToken;
-import site.onandoff.auth.presentation.AuthController;
 import site.onandoff.exception.auth.AuthorizationHeaderException;
 import site.onandoff.exception.auth.ExpiredTokenException;
 import site.onandoff.exception.auth.InvalidLoginException;
@@ -163,7 +163,7 @@ class AuthControllerTest extends RestDocsSupport {
 
 		// when & then
 		mockMvc.perform(post("/reissue")
-				.header(HttpHeaders.AUTHORIZATION, "Bearer accessToken"))
+				.header(HttpHeaders.AUTHORIZATION, "Bearer refreshToken"))
 			.andDo(print())
 			.andExpect(status().isUnauthorized())
 			.andDo(document("reissue-fail",
