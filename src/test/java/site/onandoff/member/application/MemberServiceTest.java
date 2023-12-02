@@ -12,8 +12,11 @@ import jakarta.validation.ConstraintViolationException;
 import site.onandoff.IntegrationTestSupport;
 import site.onandoff.member.Member;
 import site.onandoff.member.Provider;
+import site.onandoff.member.dto.ModifiedMember;
+import site.onandoff.member.dto.NicknameChangeForm;
 import site.onandoff.member.dto.SignUpForm;
 import site.onandoff.member.dto.SignUpSuccessResponse;
+import site.onandoff.member.dto.UniqueNicknameChangeForm;
 import site.onandoff.member.dto.UniqueSignUpForm;
 import site.onandoff.member.infrastructure.MemberRepository;
 
@@ -54,6 +57,38 @@ class MemberServiceTest extends IntegrationTestSupport {
 
 		// when & then
 		assertThatThrownBy(() -> memberService.signUp(uniqueSignUpForm))
+			.isInstanceOf(ConstraintViolationException.class)
+			.hasMessageContaining("이미 존재하는 닉네임입니다.");
+	}
+
+	@Test
+	@DisplayName("사용자 닉네임 변경에 성공하면 변경된 사용자 정보를 응답한다.")
+	void modifyNicknameSuccess() {
+		// given
+		Member member = memberRepository.save(new Member("yeon@email.com", "yeonise", "yeon!123", Provider.LOCAL));
+		NicknameChangeForm nicknameChangeForm = new NicknameChangeForm("hyeonise");
+		UniqueNicknameChangeForm uniqueNicknameChangeForm = nicknameChangeForm.toUnique(member.getId());
+
+		// when
+		ModifiedMember modifiedMember = memberService.modifyNickname(uniqueNicknameChangeForm);
+
+		// then
+		assertThat(modifiedMember.getNickname()).isEqualTo(uniqueNicknameChangeForm.getNickname());
+	}
+
+	@Test
+	@DisplayName("중복된 닉네임으로 변경을 요청한 경우 예외가 발생한다.")
+	void modifyNicknameFail() {
+		// given
+		String DUPLICATED_NICKNAME = "hyeonise";
+		memberRepository.save(new Member("hyeon@email.com", DUPLICATED_NICKNAME, "hyeon!123", Provider.LOCAL));
+		Member member = memberRepository.save(new Member("yeon@email.com", "yeonise", "yeon!123", Provider.LOCAL));
+
+		NicknameChangeForm nicknameChangeForm = new NicknameChangeForm(DUPLICATED_NICKNAME);
+		UniqueNicknameChangeForm uniqueNicknameChangeForm = nicknameChangeForm.toUnique(member.getId());
+
+		// when & then
+		assertThatThrownBy(() -> memberService.modifyNickname(uniqueNicknameChangeForm))
 			.isInstanceOf(ConstraintViolationException.class)
 			.hasMessageContaining("이미 존재하는 닉네임입니다.");
 	}
