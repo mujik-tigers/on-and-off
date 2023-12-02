@@ -9,8 +9,8 @@ import lombok.RequiredArgsConstructor;
 import site.onandoff.member.application.MemberService;
 import site.onandoff.member.dto.SignUpForm;
 import site.onandoff.member.dto.SignUpSuccessResponse;
-import site.onandoff.util.ApiResponse;
-import site.onandoff.util.ResponseMessage;
+import site.onandoff.util.api.ApiResponse;
+import site.onandoff.util.api.ResponseMessage;
 
 @RestController
 @RequiredArgsConstructor
