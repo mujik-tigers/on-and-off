@@ -9,6 +9,7 @@ import site.onandoff.exception.auth.InvalidLoginException;
 import site.onandoff.member.Member;
 import site.onandoff.member.Provider;
 import site.onandoff.member.infrastructure.MemberRepository;
+import site.onandoff.util.encryption.AES256Manager;
 import site.onandoff.util.encryption.BCryptManager;
 
 @Component
@@ -18,6 +19,7 @@ public class AuthManager {
 	private static final String AUTHORIZATION_PREFIX = "Bearer ";
 
 	private final MemberRepository memberRepository;
+	private final AES256Manager aes256Manager;
 
 	public String validateAuthorizationHeader(String authorizationHeader) {
 		if (authorizationHeader == null || !authorizationHeader.startsWith(AUTHORIZATION_PREFIX)) {
@@ -28,7 +30,8 @@ public class AuthManager {
 	}
 
 	public Member authenticateLoginData(LoginData loginData) {
-		Member member = memberRepository.findByEmailAndProvider(loginData.getEmail(), Provider.LOCAL)
+		Member member = memberRepository.findByEmailAndProvider(aes256Manager.encrypt(loginData.getEmail()),
+				Provider.LOCAL)
 			.orElseThrow(InvalidLoginException::new);
 
 		if (BCryptManager.isMatch(loginData.getPassword(), member.getPassword())) {
