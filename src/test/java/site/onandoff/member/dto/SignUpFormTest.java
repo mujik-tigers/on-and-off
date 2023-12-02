@@ -19,7 +19,7 @@ class SignUpFormTest extends IntegrationTestSupport {
 
 	@Test
 	@DisplayName("만약 올바르지 않은 이메일 형식을 입력하면 이메일 형식 관련 violation 을 반환한다.")
-	void wrongInputForm() throws Exception {
+	void wrongInputForm() {
 		// given
 		String invalidEmailInput = "it's fake email";
 		SignUpForm signUpForm = new SignUpForm(invalidEmailInput, "hyun", "1234567a!");
@@ -34,7 +34,7 @@ class SignUpFormTest extends IntegrationTestSupport {
 
 	@Test
 	@DisplayName("올바른 이메일 형식을 입력하면 violation 을 반환하지 않는다.")
-	void correctInputForm() throws Exception {
+	void correctInputForm() {
 		// given
 		String invalidEmailInput = "ghkdgus29@codesquand.ac.kr";
 		SignUpForm signUpForm = new SignUpForm(invalidEmailInput, "hyun", "1234567a!");
@@ -48,7 +48,7 @@ class SignUpFormTest extends IntegrationTestSupport {
 
 	@Test
 	@DisplayName("62자 초과의 이메일을 입력하면 이메일 형식 관련 violation 을 반환한다.")
-	void shortEmailInput() throws Exception {
+	void shortEmailInput() {
 		// given
 		String longEmailInput = "hellohellohellohellohellohellohellohellohellohellohellohello@naver.com";
 		SignUpForm signUpForm = new SignUpForm(longEmailInput, "hyun", "1234567a!");
@@ -63,7 +63,7 @@ class SignUpFormTest extends IntegrationTestSupport {
 
 	@Test
 	@DisplayName("비밀번호는 영문자, 숫자, 특수문자를 포함하는 8-16자 문자열이어야 한다.")
-	void inputPassword() throws Exception {
+	void inputPassword() {
 		// given
 		String shortPassword = "123a!";
 		SignUpForm shortPasswordForm = new SignUpForm("ghkdgus29@naver.com", "hyun", shortPassword);
@@ -98,7 +98,7 @@ class SignUpFormTest extends IntegrationTestSupport {
 
 	@Test
 	@DisplayName("닉네임은 영문자, 숫자, 한글로 이루어진 1-10자 문자열이어야 한다.")
-	void inputNickname() throws Exception {
+	void inputNickname() {
 		// given
 		String blankNickname = "";
 		SignUpForm blankNicknameForm = new SignUpForm("ghkdgus29@naver.com", blankNickname, "1234567a!");
