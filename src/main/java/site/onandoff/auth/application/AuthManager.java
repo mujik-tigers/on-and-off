@@ -3,7 +3,7 @@ package site.onandoff.auth.application;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import site.onandoff.auth.dto.LoginData;
+import site.onandoff.auth.dto.LoginForm;
 import site.onandoff.exception.auth.AuthorizationHeaderException;
 import site.onandoff.exception.auth.InvalidLoginException;
 import site.onandoff.member.Member;
@@ -29,12 +29,12 @@ public class AuthManager {
 		return authorizationHeader.substring(AUTHORIZATION_PREFIX.length());
 	}
 
-	public Member authenticateLoginData(LoginData loginData) {
-		Member member = memberRepository.findByEmailAndProvider(aes256Manager.encrypt(loginData.getEmail()),
+	public Member authenticateLoginData(LoginForm loginForm) {
+		Member member = memberRepository.findByEmailAndProvider(aes256Manager.encrypt(loginForm.getEmail()),
 				Provider.LOCAL)
 			.orElseThrow(InvalidLoginException::new);
 
-		if (BCryptManager.isMatch(loginData.getPassword(), member.getPassword())) {
+		if (BCryptManager.isMatch(loginForm.getPassword(), member.getPassword())) {
 			return member;
 		}
 

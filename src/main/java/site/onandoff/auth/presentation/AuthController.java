@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import site.onandoff.auth.Account;
 import site.onandoff.auth.application.AuthService;
 import site.onandoff.auth.dto.AuthenticationTokenPair;
-import site.onandoff.auth.dto.LoginData;
+import site.onandoff.auth.dto.LoginForm;
 import site.onandoff.auth.dto.ReissuedAccessToken;
 import site.onandoff.util.api.ApiResponse;
 import site.onandoff.util.resolver.Login;
@@ -23,8 +23,8 @@ public class AuthController {
 	private final AuthService authService;
 
 	@PostMapping("/login")
-	public ApiResponse<AuthenticationTokenPair> login(@RequestBody @Valid LoginData loginData) {
-		return ApiResponse.ok(LOGIN_SUCCESS.getMessage(), authService.login(loginData));
+	public ApiResponse<AuthenticationTokenPair> login(@RequestBody @Valid LoginForm loginForm) {
+		return ApiResponse.ok(LOGIN_SUCCESS.getMessage(), authService.login(loginForm));
 	}
 
 	@PostMapping("/reissue")

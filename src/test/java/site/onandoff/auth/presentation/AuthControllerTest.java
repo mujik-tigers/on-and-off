@@ -19,7 +19,7 @@ import site.onandoff.RestDocsSupport;
 import site.onandoff.auth.Account;
 import site.onandoff.auth.application.AuthService;
 import site.onandoff.auth.dto.AuthenticationTokenPair;
-import site.onandoff.auth.dto.LoginData;
+import site.onandoff.auth.dto.LoginForm;
 import site.onandoff.auth.dto.ReissuedAccessToken;
 import site.onandoff.exception.auth.AuthorizationHeaderException;
 import site.onandoff.exception.auth.ExpiredTokenException;
@@ -39,14 +39,14 @@ class AuthControllerTest extends RestDocsSupport {
 	@DisplayName("일반 로그인 : 성공")
 	void loginSuccess() throws Exception {
 		// given
-		LoginData loginData = new LoginData("yeon@email.com", "test!1234");
+		LoginForm loginForm = new LoginForm("yeon@email.com", "test!1234");
 
-		given(authService.login(any(LoginData.class)))
+		given(authService.login(any(LoginForm.class)))
 			.willReturn(new AuthenticationTokenPair("accessToken", "refreshToken"));
 
 		// when & then
 		mockMvc.perform(post("/login")
-				.content(objectMapper.writeValueAsString(loginData))
+				.content(objectMapper.writeValueAsString(loginForm))
 				.contentType(MediaType.APPLICATION_JSON))
 			.andDo(print())
 			.andExpect(status().isOk())
@@ -72,14 +72,14 @@ class AuthControllerTest extends RestDocsSupport {
 	@DisplayName("일반 로그인 : 실패")
 	void loginFail() throws Exception {
 		// given
-		LoginData loginData = new LoginData("yeon@email.com", "test!123");
+		LoginForm loginForm = new LoginForm("yeon@email.com", "test!123");
 
-		given(authService.login(any(LoginData.class)))
+		given(authService.login(any(LoginForm.class)))
 			.willThrow(new InvalidLoginException());
 
 		// when & then
 		mockMvc.perform(post("/login")
-				.content(objectMapper.writeValueAsString(loginData))
+				.content(objectMapper.writeValueAsString(loginForm))
 				.contentType(MediaType.APPLICATION_JSON))
 			.andDo(print())
 			.andExpect(status().isUnauthorized())
@@ -103,11 +103,11 @@ class AuthControllerTest extends RestDocsSupport {
 	@DisplayName("일반 로그인 : 입력 형식 오류")
 	void loginValidFail() throws Exception {
 		// given
-		LoginData loginData = new LoginData("yeon@email.c", "test1234");
+		LoginForm loginForm = new LoginForm("yeon@email.c", "test1234");
 
 		// when & then
 		mockMvc.perform(post("/login")
-				.content(objectMapper.writeValueAsString(loginData))
+				.content(objectMapper.writeValueAsString(loginForm))
 				.contentType(MediaType.APPLICATION_JSON))
 			.andDo(print())
 			.andExpect(status().isBadRequest())

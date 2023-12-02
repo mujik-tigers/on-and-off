@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import site.onandoff.IntegrationTestSupport;
 import site.onandoff.auth.dto.AuthenticationTokenPair;
-import site.onandoff.auth.dto.LoginData;
+import site.onandoff.auth.dto.LoginForm;
 import site.onandoff.exception.ErrorType;
 import site.onandoff.exception.auth.InvalidLoginException;
 import site.onandoff.member.Member;
@@ -46,10 +46,10 @@ class AuthServiceTest extends IntegrationTestSupport {
 		);
 		memberRepository.save(member);
 
-		LoginData loginData = new LoginData(EMAIL, PASSWORD);
+		LoginForm loginForm = new LoginForm(EMAIL, PASSWORD);
 
 		// when
-		AuthenticationTokenPair tokenPair = authService.login(loginData);
+		AuthenticationTokenPair tokenPair = authService.login(loginForm);
 
 		// then
 		assertAll(
@@ -72,10 +72,10 @@ class AuthServiceTest extends IntegrationTestSupport {
 		);
 		memberRepository.save(member);
 
-		LoginData loginData = new LoginData(email, password);
+		LoginForm loginForm = new LoginForm(email, password);
 
 		// when & then
-		assertThatThrownBy(() -> authService.login(loginData))
+		assertThatThrownBy(() -> authService.login(loginForm))
 			.isInstanceOf(InvalidLoginException.class)
 			.hasMessage(ErrorType.INVALID_LOGIN_REQUEST.getMessage());
 	}
