@@ -13,10 +13,10 @@ import jakarta.validation.ConstraintValidatorContext;
 import jakarta.validation.Payload;
 
 @Documented
-@Constraint(validatedBy = PasswordForm.PasswordFormValidator.class)
+@Constraint(validatedBy = PasswordFormatCheck.PasswordFormValidator.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface PasswordForm {
+public @interface PasswordFormatCheck {
 
 	String message() default "비밀번호는 영문, 숫자, 특수기호를 모두 포함하는 8-16자 문자열입니다.";
 
@@ -24,7 +24,7 @@ public @interface PasswordForm {
 
 	Class<? extends Payload>[] payload() default {};
 
-	class PasswordFormValidator implements ConstraintValidator<PasswordForm, String> {
+	class PasswordFormValidator implements ConstraintValidator<PasswordFormatCheck, String> {
 
 		private final String REGEX_PASSWORD = "^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$";
 

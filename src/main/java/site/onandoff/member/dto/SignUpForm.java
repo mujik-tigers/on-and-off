@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import site.onandoff.member.validator.EmailFormatCheck;
 import site.onandoff.member.validator.NicknameFormatCheck;
-import site.onandoff.member.validator.PasswordForm;
+import site.onandoff.member.validator.PasswordFormatCheck;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,7 +18,7 @@ public class SignUpForm {
 	@NicknameFormatCheck
 	private String nickname;
 
-	@PasswordForm
+	@PasswordFormatCheck
 	private String password;
 
 	public UniqueSignUpForm toUnique() {
