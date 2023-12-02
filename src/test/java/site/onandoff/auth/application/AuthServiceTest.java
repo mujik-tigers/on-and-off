@@ -61,7 +61,7 @@ class AuthServiceTest extends IntegrationTestSupport {
 
 	@ParameterizedTest
 	@CsvSource({"yeon@email.com,yeon123!", "yeom@email.com,yeon!123"})
-	@DisplayName("로그인 요청 데이터가 유효하지 않다면 예외가 발생한다.")
+	@DisplayName("로그인 요청 데이터와 일치하는 사용자가 존재하지 않는다면 예외가 발생한다.")
 	void loginFail(String email, String password) {
 		// given
 		Member member = new Member(
