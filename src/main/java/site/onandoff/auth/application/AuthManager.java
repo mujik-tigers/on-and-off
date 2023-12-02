@@ -9,7 +9,7 @@ import site.onandoff.exception.auth.InvalidLoginException;
 import site.onandoff.member.Member;
 import site.onandoff.member.Provider;
 import site.onandoff.member.infrastructure.MemberRepository;
-import site.onandoff.util.PasswordEncoder;
+import site.onandoff.util.encryption.BCryptManager;
 
 @Component
 @RequiredArgsConstructor
@@ -31,7 +31,7 @@ public class AuthManager {
 		Member member = memberRepository.findByEmailAndProvider(loginData.getEmail(), Provider.LOCAL)
 			.orElseThrow(InvalidLoginException::new);
 
-		if (PasswordEncoder.isMatch(loginData.getPassword(), member.getPassword())) {
+		if (BCryptManager.isMatch(loginData.getPassword(), member.getPassword())) {
 			return member;
 		}
 
