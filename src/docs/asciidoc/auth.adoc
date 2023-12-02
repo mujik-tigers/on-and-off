@@ -1,10 +1,7 @@
 [[Authentication-API]]
 == Authentication API
 
-include::api/auth/login-success.adoc[]
-include::api/auth/login-fail.adoc[]
-include::api/auth/login-valid-fail.adoc[]
-include::api/auth/reissue-success.adoc[]
-include::api/auth/reissue-fail.adoc[]
+include::api/auth/login.adoc[]
+include::api/auth/reissue.adoc[]
 include::api/auth/invalid-authorization-header.adoc[]
 include::api/auth/expired-token.adoc[]
