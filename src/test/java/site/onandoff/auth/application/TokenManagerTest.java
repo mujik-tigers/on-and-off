@@ -63,4 +63,18 @@ class TokenManagerTest extends IntegrationTestSupport {
 			.hasMessage(ErrorType.INVALID_TOKEN.getMessage());
 	}
 
+	@Test
+	@DisplayName("토큰의 타입이 refresh가 아니라면 예외가 발생한다.")
+	void validateRefreshToken() {
+		// given
+		Long MEMBER_ID = 1L;
+		String accessToken = tokenManager.issueAccessToken(MEMBER_ID).getAccessToken();
+
+		// when & then
+		assertThatThrownBy(() -> tokenManager.validateRefreshToken(accessToken))
+			.isInstanceOf(InvalidTokenException.class)
+			.hasMessage(ErrorType.INVALID_TOKEN.getMessage());
+
+	}
+
 }
