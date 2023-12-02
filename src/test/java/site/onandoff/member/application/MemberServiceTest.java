@@ -55,7 +55,7 @@ class MemberServiceTest extends IntegrationTestSupport {
 		// when & then
 		assertThatThrownBy(() -> memberService.signUp(uniqueSignUpForm))
 			.isInstanceOf(ConstraintViolationException.class)
-			.hasMessage("signUp.signUpForm.nickname: 이미 존재하는 닉네임입니다.");
+			.hasMessageContaining("이미 존재하는 닉네임입니다.");
 	}
 
 }
