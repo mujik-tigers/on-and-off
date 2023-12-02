@@ -24,7 +24,7 @@ class AES256ManagerTest extends IntegrationTestSupport {
 		String encrypt2 = aes256Manager.encrypt(plain);
 
 		// then
-		assertThat(encrypt2).isEqualTo(encrypt2);
+		assertThat(encrypt1).isEqualTo(encrypt2);
 	}
 
 	@Test
