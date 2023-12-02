@@ -40,7 +40,8 @@ public class MemberService {
 		return new SignUpSuccessResponse(savedMember.getId());
 	}
 
-	public ModifiedMember modifyNickname(UniqueNicknameChangeForm nicknameChangeForm) {
+	@Transactional
+	public ModifiedMember modifyNickname(@Valid UniqueNicknameChangeForm nicknameChangeForm) {
 		Member member = memberRepository.findById(nicknameChangeForm.getId()).orElseThrow(MemberNotFoundException::new);
 		member.modifyNickname(nicknameChangeForm.getNickname());
 
