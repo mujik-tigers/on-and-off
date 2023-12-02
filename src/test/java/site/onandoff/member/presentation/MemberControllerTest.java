@@ -14,6 +14,7 @@ import java.util.Set;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 
@@ -21,8 +22,11 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import site.onandoff.RestDocsSupport;
 import site.onandoff.member.application.MemberService;
+import site.onandoff.member.dto.ModifiedMember;
+import site.onandoff.member.dto.NicknameChangeForm;
 import site.onandoff.member.dto.SignUpForm;
 import site.onandoff.member.dto.SignUpSuccessResponse;
+import site.onandoff.member.dto.UniqueNicknameChangeForm;
 import site.onandoff.member.dto.UniqueSignUpForm;
 
 class MemberControllerTest extends RestDocsSupport {
@@ -140,6 +144,118 @@ class MemberControllerTest extends RestDocsSupport {
 					fieldWithPath("data[]").type(JsonFieldType.ARRAY).description("응답 데이터"),
 					fieldWithPath("data[].field").type(JsonFieldType.STRING).description("잘못 입력한 필드"),
 					fieldWithPath("data[].message").type(JsonFieldType.STRING).description("에러 발생 이유")
+				)
+			));
+	}
+
+	@Test
+	@DisplayName("닉네임 변경 : 성공")
+	void modifyNicknameSuccess() throws Exception {
+		// given
+		Long MEMBER_ID = 1L;
+		String NEW_NICKNAME = "yeonise";
+
+		NicknameChangeForm nicknameChangeForm = new NicknameChangeForm(NEW_NICKNAME);
+
+		given(memberService.modifyNickname(any(UniqueNicknameChangeForm.class)))
+			.willReturn(new ModifiedMember(MEMBER_ID, NEW_NICKNAME));
+
+		// when & then
+		mockMvc.perform(patch("/members/nickname")
+				.header(HttpHeaders.AUTHORIZATION, "Bearer accessToken")
+				.content(objectMapper.writeValueAsString(nicknameChangeForm))
+				.contentType(MediaType.APPLICATION_JSON))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.data.id").value(MEMBER_ID))
+			.andExpect(jsonPath("$.data.nickname").value(NEW_NICKNAME))
+			.andDo(document("modify-nickname-success",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				requestFields(
+					fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임")
+				),
+				responseFields(
+					fieldWithPath("code").type(JsonFieldType.NUMBER).description("코드"),
+					fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
+					fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
+					fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
+					fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("사용자 고유 식별 아이디"),
+					fieldWithPath("data.nickname").type(JsonFieldType.STRING).description("변경된 닉네임")
+				)
+			));
+	}
+
+	@Test
+	@DisplayName("닉네임 변경 : 형식 오류")
+	void modifyNicknameFail() throws Exception {
+		// given
+		String INVALID_NICKNAME = "thisIsTooLong";
+		NicknameChangeForm nicknameChangeForm = new NicknameChangeForm(INVALID_NICKNAME);
+
+		// when & then
+		mockMvc.perform(patch("/members/nickname")
+				.header(HttpHeaders.AUTHORIZATION, "Bearer accessToken")
+				.content(objectMapper.writeValueAsString(nicknameChangeForm))
+				.contentType(MediaType.APPLICATION_JSON))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andDo(document("modify-nickname-fail",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				requestFields(
+					fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임")
+				),
+				responseFields(
+					fieldWithPath("code").type(JsonFieldType.NUMBER).description("코드"),
+					fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
+					fieldWithPath("message").type(JsonFieldType.NULL).description("메시지"),
+					fieldWithPath("data[]").type(JsonFieldType.ARRAY).description("응답 데이터"),
+					fieldWithPath("data[].field").type(JsonFieldType.STRING).description("필드"),
+					fieldWithPath("data[].message").type(JsonFieldType.STRING).description("에러 메시지")
+				)
+			));
+	}
+
+	@Test
+	@DisplayName("닉네임 변경 : 중복 오류")
+	void modifyUniqueNicknameFail() throws Exception {
+		// given
+		String DUPLICATED_NICKNAME = "yeonise";
+		NicknameChangeForm nicknameChangeForm = new NicknameChangeForm(DUPLICATED_NICKNAME);
+
+		ConstraintViolationException exception = mock(ConstraintViolationException.class);
+		Set<ConstraintViolation<?>> violations = new HashSet<>();
+		ConstraintViolation<?> mockedViolation = mock(ConstraintViolation.class);
+		violations.add(mockedViolation);
+
+		given(mockedViolation.getPropertyPath()).willReturn(
+			PathImpl.createPathFromString("modifyNickname.NicknameChangeForm.email"));
+		given(mockedViolation.getMessage()).willReturn("이미 존재하는 닉네임입니다.");
+		given(exception.getConstraintViolations()).willReturn(violations);
+		given(memberService.modifyNickname(any(UniqueNicknameChangeForm.class)))
+			.willThrow(exception);
+
+		// when & then
+		mockMvc.perform(patch("/members/nickname")
+				.header(HttpHeaders.AUTHORIZATION, "Bearer accessToken")
+				.content(objectMapper.writeValueAsString(nicknameChangeForm))
+				.contentType(MediaType.APPLICATION_JSON))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andDo(document("unique-modify-nickname-fail",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				requestFields(
+					fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임")
+				),
+				responseFields(
+					fieldWithPath("code").type(JsonFieldType.NUMBER).description("코드"),
+					fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
+					fieldWithPath("message").type(JsonFieldType.NULL).description("메시지"),
+					fieldWithPath("data[]").type(JsonFieldType.ARRAY).description("응답 데이터"),
+					fieldWithPath("data[].field").type(JsonFieldType.STRING).description("필드"),
+					fieldWithPath("data[].message").type(JsonFieldType.STRING).description("에러 메시지")
 				)
 			));
 	}
