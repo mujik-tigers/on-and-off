@@ -1,11 +1,13 @@
 [[login-fail]]
-== 일반 로그인 : 실패
+=== 일반 로그인 : 실패
 
 ==== HTTP Request
+
 include::{snippets}/login-fail/http-request.adoc[]
 include::{snippets}/login-fail/request-fields.adoc[]
 
 ==== HTTP Response
+
 include::{snippets}/login-fail/http-response.adoc[]
 include::{snippets}/login-fail/response-fields.adoc[]
 

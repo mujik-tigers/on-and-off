@@ -1,4 +1,4 @@
-package site.onandoff.util;
+package site.onandoff.util.resolver;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;

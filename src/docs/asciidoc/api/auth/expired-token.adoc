@@ -1,5 +1,5 @@
 [[expired-token]]
-== 인증 실패 : Authorization Header 오류
+=== 인증 실패 : 만료된 토큰
 
 ==== HTTP Request
 

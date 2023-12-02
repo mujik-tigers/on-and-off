@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import lombok.RequiredArgsConstructor;
 import site.onandoff.interceptor.AccessTokenInterceptor;
 import site.onandoff.interceptor.RefreshTokenInterceptor;
-import site.onandoff.util.LoginArgumentResolver;
+import site.onandoff.util.resolver.LoginArgumentResolver;
 
 @Configuration
 @RequiredArgsConstructor

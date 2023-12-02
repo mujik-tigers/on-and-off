@@ -8,7 +8,7 @@ public class BCryptManager {
 		return BCrypt.hashpw(plainData, BCrypt.gensalt());
 	}
 
-	public static boolean isPasswordMatch(String plainData, String hashData) {
+	public static boolean isMatch(String plainData, String hashData) {
 		return BCrypt.checkpw(plainData, hashData);
 	}
 

@@ -53,7 +53,7 @@ class BCryptManagerTest {
 		String hashPassword = BCryptManager.encrypt(plainPassword);
 
 		// when
-		boolean passwordMatch = BCryptManager.isPasswordMatch(plainPassword, hashPassword);
+		boolean passwordMatch = BCryptManager.isMatch(plainPassword, hashPassword);
 
 		// then
 		assertThat(passwordMatch).isTrue();
@@ -67,7 +67,7 @@ class BCryptManagerTest {
 		String plainPassword = "hello";
 
 		// when
-		boolean passwordMatch = BCryptManager.isPasswordMatch(plainPassword, hashPassword);
+		boolean passwordMatch = BCryptManager.isMatch(plainPassword, hashPassword);
 
 		// then
 		assertThat(passwordMatch).isFalse();

@@ -1,4 +1,4 @@
-package site.onandoff.member.validator;
+package site.onandoff.validator.member;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -31,7 +31,7 @@ public @interface EmailFormatCheck {
 
 		@Override
 		public boolean isValid(String emailInput, ConstraintValidatorContext context) {
-			return emailRegex.matcher(emailInput).matches();
+			return emailInput != null && emailRegex.matcher(emailInput).matches();
 		}
 	}
 

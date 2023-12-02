@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import site.onandoff.auth.Account;
 import site.onandoff.auth.dto.AuthenticationTokenPair;
-import site.onandoff.auth.dto.LoginData;
+import site.onandoff.auth.dto.LoginForm;
 import site.onandoff.auth.dto.ReissuedAccessToken;
 import site.onandoff.member.Member;
 
@@ -18,8 +18,8 @@ public class AuthService {
 	private final AuthManager authManager;
 	private final TokenManager tokenManager;
 
-	public AuthenticationTokenPair login(LoginData loginData) {
-		Member member = authManager.authenticateLoginData(loginData);
+	public AuthenticationTokenPair login(LoginForm loginForm) {
+		Member member = authManager.authenticateLoginData(loginForm);
 		return tokenManager.issueTokenPair(member.getId());
 	}
 

@@ -1,4 +1,4 @@
-package site.onandoff.util;
+package site.onandoff.util.api;
 
 import org.springframework.http.HttpStatus;
 

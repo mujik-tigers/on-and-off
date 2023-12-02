@@ -1,4 +1,4 @@
-package site.onandoff.member.validator;
+package site.onandoff.validator.member;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -7,7 +7,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.ConstraintValidator;
@@ -27,7 +26,6 @@ public @interface NicknameDuplicateCheck {
 
 	Class<? extends Payload>[] payload() default {};
 
-	@Component
 	class NicknameDuplicateValidator implements ConstraintValidator<NicknameDuplicateCheck, String> {
 		private MemberRepository memberRepository;
 

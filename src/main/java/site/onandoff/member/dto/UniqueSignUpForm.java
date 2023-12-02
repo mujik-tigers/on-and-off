@@ -2,8 +2,8 @@ package site.onandoff.member.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import site.onandoff.member.validator.EmailDuplicateCheck;
-import site.onandoff.member.validator.NicknameDuplicateCheck;
+import site.onandoff.validator.member.EmailDuplicateCheck;
+import site.onandoff.validator.member.NicknameDuplicateCheck;
 
 @AllArgsConstructor
 @Getter

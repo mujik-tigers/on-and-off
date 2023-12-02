@@ -1,5 +1,5 @@
 [[unique-signup-fail]]
-== 회원 가입 실패 : 중복 회원
+=== 회원 가입 실패 : 중복 회원
 
 ==== HTTP Request
 

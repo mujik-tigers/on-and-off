@@ -1,9 +1,9 @@
-package site.onandoff.util;
+package site.onandoff.util.api;
 
 public enum ResponseMessage {
 
 	// Member
-	SIGNUP_SUCCESS("회원가입에 성공했습니다."),
+	SIGNUP_SUCCESS("회원가입에 성공했습니다"),
 
 	// Auth
 	LOGIN_SUCCESS("로그인에 성공했습니다"),

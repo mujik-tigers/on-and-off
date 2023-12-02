@@ -1,5 +1,5 @@
 [[invalid-authorization-header]]
-== 인증 실패 : Authorization Header 오류
+=== 인증 실패 : Authorization Header 오류
 
 ==== HTTP Request
 
