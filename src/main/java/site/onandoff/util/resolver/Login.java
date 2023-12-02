@@ -1,4 +1,4 @@
-package site.onandoff.util;
+package site.onandoff.util.resolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

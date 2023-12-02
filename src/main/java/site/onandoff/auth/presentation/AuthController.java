@@ -13,8 +13,8 @@ import site.onandoff.auth.application.AuthService;
 import site.onandoff.auth.dto.AuthenticationTokenPair;
 import site.onandoff.auth.dto.LoginData;
 import site.onandoff.auth.dto.ReissuedAccessToken;
-import site.onandoff.util.Login;
 import site.onandoff.util.api.ApiResponse;
+import site.onandoff.util.resolver.Login;
 
 @RestController
 @RequiredArgsConstructor
