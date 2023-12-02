@@ -64,7 +64,7 @@ class TokenManagerTest extends IntegrationTestSupport {
 	}
 
 	@Test
-	@DisplayName("토큰의 타입이 refresh가 아니라면 예외가 발생한다.")
+	@DisplayName("refresh 토큰을 검증하는 validateRefreshToken 메서드에 넘겨진 파라미터가 refresh 토큰이 아니라면 예외가 발생한다.")
 	void validateRefreshToken() {
 		// given
 		Long MEMBER_ID = 1L;

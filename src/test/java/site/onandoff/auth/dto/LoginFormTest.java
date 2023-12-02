@@ -22,7 +22,7 @@ class LoginFormTest extends IntegrationTestSupport {
 	private Validator validator;
 
 	@Test
-	@DisplayName("이메일과 비밀번호 형식이 올바르면 컬렉션에 아무것도 저장하지 않는다.")
+	@DisplayName("이메일과 비밀번호 형식이 올바르면 violation이 발생하지 않는다.")
 	void validateEmailSuccess() {
 		// given
 		LoginForm loginForm = new LoginForm("yeon@email.com", "yeon!123");

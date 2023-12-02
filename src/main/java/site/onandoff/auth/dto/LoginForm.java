@@ -3,8 +3,8 @@ package site.onandoff.auth.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import site.onandoff.member.validator.EmailFormatCheck;
-import site.onandoff.member.validator.PasswordFormatCheck;
+import site.onandoff.validator.member.EmailFormatCheck;
+import site.onandoff.validator.member.PasswordFormatCheck;
 
 @NoArgsConstructor
 @AllArgsConstructor
