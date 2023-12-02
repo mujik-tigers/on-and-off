@@ -31,7 +31,7 @@ public @interface EmailFormatCheck {
 
 		@Override
 		public boolean isValid(String emailInput, ConstraintValidatorContext context) {
-			return emailRegex.matcher(emailInput).matches();
+			return emailInput != null && emailRegex.matcher(emailInput).matches();
 		}
 	}
 
