@@ -13,10 +13,10 @@ import jakarta.validation.ConstraintValidatorContext;
 import jakarta.validation.Payload;
 
 @Documented
-@Constraint(validatedBy = NicknameForm.NicknameFormValidator.class)
+@Constraint(validatedBy = NicknameFormatCheck.NicknameFormatValidator.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface NicknameForm {
+public @interface NicknameFormatCheck {
 
 	String message() default "닉네임은 한글, 영문, 숫자로 이루어진 1-10자 문자열입니다.";
 
@@ -24,7 +24,7 @@ public @interface NicknameForm {
 
 	Class<? extends Payload>[] payload() default {};
 
-	class NicknameFormValidator implements ConstraintValidator<NicknameForm, String> {
+	class NicknameFormatValidator implements ConstraintValidator<NicknameFormatCheck, String> {
 
 		private final String REGEX_NICKNAME = "^[a-zA-Z0-9가-힣]{1,10}$";
 

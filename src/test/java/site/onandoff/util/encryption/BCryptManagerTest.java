@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class BcryptManagerTest {
+class BCryptManagerTest {
 
 	@Test
 	@DisplayName("평문을 60자의 해쉬 암호로 만들어 반환한다.")
@@ -16,9 +16,9 @@ class BcryptManagerTest {
 		String plainPassword3 = "안녕";
 
 		// when
-		String hashPassword1 = BcryptManager.encrypt(plainPassword1);
-		String hashPassword2 = BcryptManager.encrypt(plainPassword2);
-		String hashPassword3 = BcryptManager.encrypt(plainPassword3);
+		String hashPassword1 = BCryptManager.encrypt(plainPassword1);
+		String hashPassword2 = BCryptManager.encrypt(plainPassword2);
+		String hashPassword3 = BCryptManager.encrypt(plainPassword3);
 
 		// then
 		assertThat(hashPassword1.length()).isEqualTo(60);
@@ -35,9 +35,9 @@ class BcryptManagerTest {
 		String plainPassword3 = "hi";
 
 		// when
-		String hashPassword1 = BcryptManager.encrypt(plainPassword1);
-		String hashPassword2 = BcryptManager.encrypt(plainPassword2);
-		String hashPassword3 = BcryptManager.encrypt(plainPassword3);
+		String hashPassword1 = BCryptManager.encrypt(plainPassword1);
+		String hashPassword2 = BCryptManager.encrypt(plainPassword2);
+		String hashPassword3 = BCryptManager.encrypt(plainPassword3);
 
 		// then
 		assertThat(hashPassword1).isNotEqualTo(hashPassword2);
@@ -49,11 +49,11 @@ class BcryptManagerTest {
 	@DisplayName("입력한 평문으로 만든 해쉬암호가 맞다면 참을 반환한다.")
 	void isPasswordMatch() {
 		// given
-		String hashPassword = BcryptManager.encrypt("hi");
 		String plainPassword = "hi";
+		String hashPassword = BCryptManager.encrypt(plainPassword);
 
 		// when
-		boolean passwordMatch = BcryptManager.isPasswordMatch(plainPassword, hashPassword);
+		boolean passwordMatch = BCryptManager.isPasswordMatch(plainPassword, hashPassword);
 
 		// then
 		assertThat(passwordMatch).isTrue();
@@ -63,11 +63,11 @@ class BcryptManagerTest {
 	@DisplayName("입력한 평문으로 만든 해쉬암호가 아니라면 거짓을 반환한다.")
 	void isNotPasswordMatch() {
 		// given
-		String hashPassword = BcryptManager.encrypt("hi");
+		String hashPassword = BCryptManager.encrypt("hi");
 		String plainPassword = "hello";
 
 		// when
-		boolean passwordMatch = BcryptManager.isPasswordMatch(plainPassword, hashPassword);
+		boolean passwordMatch = BCryptManager.isPasswordMatch(plainPassword, hashPassword);
 
 		// then
 		assertThat(passwordMatch).isFalse();

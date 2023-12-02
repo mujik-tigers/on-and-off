@@ -27,6 +27,7 @@ import site.onandoff.member.dto.UniqueSignUpForm;
 
 class MemberControllerTest extends RestDocsSupport {
 
+	private static final long MEMBER_ID = 1L;
 	private final MemberService memberService = mock(MemberService.class);
 
 	@Override
@@ -41,7 +42,7 @@ class MemberControllerTest extends RestDocsSupport {
 		SignUpForm signUpForm = new SignUpForm("ghkdgus29@naver.com", "hyun", "1234567a!");
 
 		given(memberService.signUp(any(UniqueSignUpForm.class)))
-			.willReturn(new SignUpSuccessResponse(1L));
+			.willReturn(new SignUpSuccessResponse(MEMBER_ID));
 
 		// when & then
 		mockMvc.perform(post("/members")
@@ -49,8 +50,8 @@ class MemberControllerTest extends RestDocsSupport {
 				.contentType(MediaType.APPLICATION_JSON))
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.data.redirectURL").value("https://on-and-off.site"))
-			.andExpect(jsonPath("$.data.savedMemberId").value(1))
+			.andExpect(jsonPath("$.data.redirectUrl").value("https://on-and-off.site"))
+			.andExpect(jsonPath("$.data.savedMemberId").value(MEMBER_ID))
 			.andDo(document("signup-success",
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint()),
@@ -64,7 +65,7 @@ class MemberControllerTest extends RestDocsSupport {
 					fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
 					fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
 					fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
-					fieldWithPath("data.redirectURL").type(JsonFieldType.STRING).description("리디렉션 URL"),
+					fieldWithPath("data.redirectUrl").type(JsonFieldType.STRING).description("리디렉션 URL"),
 					fieldWithPath("data.savedMemberId").type(JsonFieldType.NUMBER).description("유저 PK")
 				)
 			));
@@ -109,7 +110,7 @@ class MemberControllerTest extends RestDocsSupport {
 
 		ConstraintViolationException exception = mock(ConstraintViolationException.class);
 		Set<ConstraintViolation<?>> violations = new HashSet<>();
-		ConstraintViolation mockedViolation = mock(ConstraintViolation.class);
+		ConstraintViolation<?> mockedViolation = mock(ConstraintViolation.class);
 		violations.add(mockedViolation);
 
 		given(mockedViolation.getPropertyPath()).willReturn(PathImpl.createPathFromString("signUp.signUpForm.email"));

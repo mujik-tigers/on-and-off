@@ -12,7 +12,7 @@ import site.onandoff.member.dto.SignUpSuccessResponse;
 import site.onandoff.member.dto.UniqueSignUpForm;
 import site.onandoff.member.infrastructure.MemberRepository;
 import site.onandoff.util.encryption.AES256Manager;
-import site.onandoff.util.encryption.BcryptManager;
+import site.onandoff.util.encryption.BCryptManager;
 
 @Service
 @Transactional(readOnly = true)
@@ -28,7 +28,7 @@ public class MemberService {
 		Member newMember = new Member(
 			aes256Manager.encrypt(signUpForm.getEmail()),
 			signUpForm.getNickname(),
-			BcryptManager.encrypt(signUpForm.getPassword()),
+			BCryptManager.encrypt(signUpForm.getPassword()),
 			Provider.LOCAL
 		);
 

@@ -21,7 +21,7 @@ public class AESTest {
 	private final String iv = "i".repeat(BLOCK_SIZE);
 
 	@Test
-	@DisplayName("이메일과 같은 사용자 개인정보를 암호화하여 저장한다.")
+	@DisplayName("이메일과 같은 사용자 개인정보를 암호화한다.")
 	void encrypt() throws Exception {
 		Cipher cipher = Cipher.getInstance(algorithm);
 		SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "AES");

@@ -47,7 +47,7 @@ class SignUpFormTest extends IntegrationTestSupport {
 	}
 
 	@Test
-	@DisplayName("62자 초과의 이메일을 입력하면 글자수 관련 violation 을 반환한다.")
+	@DisplayName("62자 초과의 이메일을 입력하면 이메일 형식 관련 violation 을 반환한다.")
 	void shortEmailInput() throws Exception {
 		// given
 		String longEmailInput = "hellohellohellohellohellohellohellohellohellohellohellohello@naver.com";
@@ -58,7 +58,7 @@ class SignUpFormTest extends IntegrationTestSupport {
 
 		// then
 		assertThat(violations.size()).isEqualTo(1);
-		assertThat(violations.iterator().next().getMessage()).isEqualTo("이메일 길이는 62자 이하입니다.");
+		assertThat(violations.iterator().next().getMessage()).isEqualTo("이메일이 양식에 맞지 않습니다.");
 	}
 
 	@Test

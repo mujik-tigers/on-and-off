@@ -56,9 +56,6 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.2'
     implementation 'io.jsonwebtoken:jjwt-api:0.12.2'
 
-    // Password Encoder
-    implementation 'org.mindrot:jbcrypt:0.4'
-
     // REST Docs
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'

@@ -34,9 +34,9 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(accessTokenInterceptor)
-			.addPathPatterns("/**")
-			.excludePathPatterns("/reissue", "/login", "/docs/**");
+		// registry.addInterceptor(accessTokenInterceptor)
+		// 	.addPathPatterns("/**")
+		// 	.excludePathPatterns("/reissue", "/login", "/docs/**");
 		registry.addInterceptor(refreshTokenInterceptor)
 			.addPathPatterns("/reissue");
 	}

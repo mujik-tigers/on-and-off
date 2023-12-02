@@ -17,6 +17,10 @@ public class BCryptTest {
 
 		System.out.println(hashPassword);
 		System.out.println(hashPassword.length());
+
+		int HASHED_DATA_LENGTH = 60;
+
+		assertThat(hashPassword).hasSize(HASHED_DATA_LENGTH);
 	}
 
 	@Test

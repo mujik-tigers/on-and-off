@@ -55,6 +55,7 @@ class AES256ManagerTest extends IntegrationTestSupport {
 		// then
 		assertThat(decrypt).isEqualTo(plain);
 	}
+
 }
 
 

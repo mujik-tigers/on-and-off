@@ -3,23 +3,19 @@ package site.onandoff.member.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import site.onandoff.member.validator.EmailForm;
-import site.onandoff.member.validator.EmailSize;
-import site.onandoff.member.validator.NicknameForm;
+import site.onandoff.member.validator.EmailFormatCheck;
+import site.onandoff.member.validator.NicknameFormatCheck;
 import site.onandoff.member.validator.PasswordForm;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 public class SignUpForm {
 
-	@EmailForm
-	@EmailSize
+	@EmailFormatCheck
 	private String email;
 
-	@NicknameForm
+	@NicknameFormatCheck
 	private String nickname;
 
 	@PasswordForm
