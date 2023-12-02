@@ -13,7 +13,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import jakarta.validation.Payload;
 
 @Documented
-@Constraint(validatedBy = PasswordFormatCheck.PasswordFormValidator.class)
+@Constraint(validatedBy = PasswordFormatCheck.PasswordFormatValidator.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface PasswordFormatCheck {
@@ -24,7 +24,7 @@ public @interface PasswordFormatCheck {
 
 	Class<? extends Payload>[] payload() default {};
 
-	class PasswordFormValidator implements ConstraintValidator<PasswordFormatCheck, String> {
+	class PasswordFormatValidator implements ConstraintValidator<PasswordFormatCheck, String> {
 
 		private final String REGEX_PASSWORD = "^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$";
 
