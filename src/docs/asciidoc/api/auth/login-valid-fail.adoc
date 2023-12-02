@@ -1,5 +1,5 @@
-[[login-valid-fai]]
-== 일반 로그인 : 입력 형식 오류
+[[login-valid-fail]]
+=== 일반 로그인 : 입력 형식 오류
 
 ==== HTTP Request
 

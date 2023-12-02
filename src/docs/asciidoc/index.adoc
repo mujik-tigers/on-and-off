@@ -1,6 +1,8 @@
 ifndef::snippets[]
+:snippets: ../../build/generated-snippets
 endif::[]
-= CafeKiosk REST API 문서
+
+= On and Off REST API 문서
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
@@ -8,19 +10,5 @@ endif::[]
 :toclevels: 2
 :sectlinks:
 
-[[Auth-API]]
-== Auth API
-
-include::api/auth/login-success.adoc[]
-include::api/auth/login-fail.adoc[]
-include::api/auth/login-valid-fail.adoc[]
-include::api/auth/reissue-success.adoc[]
-include::api/auth/reissue-fail.adoc[]
-include::api/auth/invalid-authorization-header.adoc[]
-include::api/auth/expired-token.adoc[]
-
-[[Member-API]]
-== Member API
-
-include::api/member/signup-success.adoc[]
-include::api/member/signup-fail.adoc[]
+include::auth.adoc[]
+include::member.adoc[]
