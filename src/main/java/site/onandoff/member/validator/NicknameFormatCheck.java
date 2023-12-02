@@ -32,7 +32,7 @@ public @interface NicknameFormatCheck {
 
 		@Override
 		public boolean isValid(String nicknameInput, ConstraintValidatorContext context) {
-			return nicknameRegex.matcher(nicknameInput).matches();
+			return nicknameInput != null && nicknameRegex.matcher(nicknameInput).matches();
 		}
 
 	}
