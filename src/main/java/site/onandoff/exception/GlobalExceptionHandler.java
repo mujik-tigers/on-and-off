@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Path;
 import site.onandoff.util.ApiResponse;
 
 @RestControllerAdvice
@@ -40,6 +43,29 @@ public class GlobalExceptionHandler {
 					return fieldError;
 				})
 		);
+	}
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ApiResponse<Object> handleConstraintViolationException(ConstraintViolationException exception) {
+		return ApiResponse.of(HttpStatus.BAD_REQUEST, null,
+			exception.getConstraintViolations().stream()
+				.collect(Collectors.groupingBy(v -> parseFieldNameFrom(v.getPropertyPath())))
+				.entrySet().stream()
+				.map(error -> {
+					Map<String, Object> fieldError = new HashMap<>();
+					fieldError.put("field", error.getKey());
+					fieldError.put("message", error.getValue().stream()
+						.map(ConstraintViolation::getMessage)
+						.collect(Collectors.joining(", ")));
+					return fieldError;
+				})
+		);
+	}
+
+	private String parseFieldNameFrom(Path propertyPath) {
+		String[] splitPath = propertyPath.toString().split("\\.");
+		return splitPath[splitPath.length - 1];
 	}
 
 }

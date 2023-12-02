@@ -8,13 +8,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import site.onandoff.util.EntityHistory;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Member extends EntityHistory {
 
 	@Id
@@ -32,6 +30,14 @@ public class Member extends EntityHistory {
 	@Enumerated(value = EnumType.STRING)
 	@Column(nullable = false)
 	private Provider provider;
+
+	public Member(String email, String nickname, String password, Provider provider) {
+		super(nickname);
+		this.email = email;
+		this.nickname = nickname;
+		this.password = password;
+		this.provider = provider;
+	}
 
 	public Long getId() {
 		return id;

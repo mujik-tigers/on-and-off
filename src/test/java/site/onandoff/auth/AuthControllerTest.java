@@ -1,5 +1,7 @@
 package site.onandoff.auth;
 
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -9,44 +11,38 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
-import site.onandoff.IntegrationTestSupport;
-import site.onandoff.auth.application.TokenManager;
+import site.onandoff.RestDocsSupport;
+import site.onandoff.auth.application.AuthService;
+import site.onandoff.auth.dto.AuthenticationTokenPair;
 import site.onandoff.auth.dto.LoginData;
-import site.onandoff.member.Member;
-import site.onandoff.member.Provider;
-import site.onandoff.util.PasswordEncoder;
+import site.onandoff.auth.dto.ReissuedAccessToken;
+import site.onandoff.auth.presentation.AuthController;
+import site.onandoff.exception.auth.AuthorizationHeaderException;
+import site.onandoff.exception.auth.ExpiredTokenException;
+import site.onandoff.exception.auth.InvalidLoginException;
+import site.onandoff.exception.auth.InvalidTokenException;
 
-class AuthTest extends IntegrationTestSupport {
+class AuthControllerTest extends RestDocsSupport {
 
-	@Autowired
-	EntityManager entityManager;
+	private final AuthService authService = mock(AuthService.class);
 
-	@Autowired
-	TokenManager tokenManager;
+	@Override
+	protected Object initController() {
+		return new AuthController(authService);
+	}
 
 	@Test
 	@DisplayName("일반 로그인 : 성공")
-	@Transactional
 	void loginSuccess() throws Exception {
 		// given
-		Member member = new Member(
-			null,
-			"yeon@email.com",
-			"yeonise",
-			PasswordEncoder.encrypt("test!1234"),
-			Provider.LOCAL
-		);
-		entityManager.persist(member);
-		entityManager.close();
-
 		LoginData loginData = new LoginData("yeon@email.com", "test!1234");
+
+		given(authService.login(any(LoginData.class)))
+			.willReturn(new AuthenticationTokenPair("accessToken", "refreshToken"));
 
 		// when & then
 		mockMvc.perform(post("/login")
@@ -74,20 +70,12 @@ class AuthTest extends IntegrationTestSupport {
 
 	@Test
 	@DisplayName("일반 로그인 : 실패")
-	@Transactional
 	void loginFail() throws Exception {
 		// given
-		Member member = new Member(
-			null,
-			"yeon@email.com",
-			"yeonise",
-			PasswordEncoder.encrypt("test!1234"),
-			Provider.LOCAL
-		);
-		entityManager.persist(member);
-		entityManager.close();
-
 		LoginData loginData = new LoginData("yeon@email.com", "test!123");
+
+		given(authService.login(any(LoginData.class)))
+			.willThrow(new InvalidLoginException());
 
 		// when & then
 		mockMvc.perform(post("/login")
@@ -145,12 +133,12 @@ class AuthTest extends IntegrationTestSupport {
 	@DisplayName("토큰 재발급 : 성공")
 	void reissueSuccess() throws Exception {
 		// given
-		Long MEMBER_ID = 1L;
-		String refreshToken = tokenManager.issueTokenPair(MEMBER_ID).getRefreshToken();
+		given(authService.reissueAccessToken(any(Account.class)))
+			.willReturn(new ReissuedAccessToken("accessToken"));
 
 		// when & then
 		mockMvc.perform(post("/reissue")
-				.header(HttpHeaders.AUTHORIZATION, "Bearer " + refreshToken))
+				.header(HttpHeaders.AUTHORIZATION, "Bearer refreshToken"))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andDo(document("reissue-success",
@@ -170,12 +158,12 @@ class AuthTest extends IntegrationTestSupport {
 	@DisplayName("토큰 재발급 : 실패")
 	void reissueFail() throws Exception {
 		// given
-		Long MEMBER_ID = 1L;
-		String accessToken = tokenManager.issueTokenPair(MEMBER_ID).getAccessToken();
+		given(authService.reissueAccessToken(any(Account.class)))
+			.willThrow(new InvalidTokenException());
 
 		// when & then
 		mockMvc.perform(post("/reissue")
-				.header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken))
+				.header(HttpHeaders.AUTHORIZATION, "Bearer accessToken"))
 			.andDo(print())
 			.andExpect(status().isUnauthorized())
 			.andDo(document("reissue-fail",
@@ -194,11 +182,12 @@ class AuthTest extends IntegrationTestSupport {
 	@DisplayName("인증 실패 : 만료된 토큰")
 	void requestWithExpiredToken() throws Exception {
 		// given
-		String accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwicmVmcmVzaCI6ZmFsc2UsImlzcyI6InRpZ2VycyIsImlhdCI6MTcwMTIzMzIzMSwiZXhwIjoxNzAxMjM1MDMxfQ.wtPrTsa9lwGxmAj0HhD-FZde9T-4Fpdyz28pE3kpUC8";
+		given(authService.reissueAccessToken(any(Account.class)))
+			.willThrow(new ExpiredTokenException());
 
 		// when & then
 		mockMvc.perform(post("/reissue")
-				.header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken))
+				.header(HttpHeaders.AUTHORIZATION, "Bearer [accessToken or refreshToken]"))
 			.andDo(print())
 			.andExpect(status().isUnauthorized())
 			.andDo(document("expired-token",
@@ -216,6 +205,10 @@ class AuthTest extends IntegrationTestSupport {
 	@Test
 	@DisplayName("인증 실패 : Authorization Header 오류")
 	void requestWithInvalidAuthorizationHeader() throws Exception {
+		// given
+		given(authService.reissueAccessToken(any(Account.class)))
+			.willThrow(new AuthorizationHeaderException());
+
 		// when & then
 		mockMvc.perform(post("/reissue")
 				.header(HttpHeaders.AUTHORIZATION, "Bear "))

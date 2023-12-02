@@ -17,7 +17,6 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
 
 	private static final String AUTHORIZATION_HEADER = "Authorization";
 	public static final String ACCOUNT_ID = "id";
-	public static final String ACCOUNT_TOKEN = "token";
 
 	private final AuthManager authManager;
 	private final TokenManager tokenManager;
@@ -34,7 +33,6 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
 		Claims claims = tokenManager.validateRefreshToken(token);
 
 		request.setAttribute(ACCOUNT_ID, claims.get(ACCOUNT_ID, Long.class));
-		request.setAttribute(ACCOUNT_TOKEN, token);
 		return true;
 	}
 

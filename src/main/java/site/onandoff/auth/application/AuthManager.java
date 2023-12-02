@@ -7,8 +7,8 @@ import site.onandoff.auth.dto.LoginData;
 import site.onandoff.exception.auth.AuthorizationHeaderException;
 import site.onandoff.exception.auth.InvalidLoginException;
 import site.onandoff.member.Member;
-import site.onandoff.member.MemberRepository;
 import site.onandoff.member.Provider;
+import site.onandoff.member.infrastructure.MemberRepository;
 import site.onandoff.util.PasswordEncoder;
 
 @Component

@@ -1,0 +1,12 @@
+[[expired-token]]
+== 인증 실패 : Authorization Header 오류
+
+==== HTTP Request
+
+include::{snippets}/expired-token/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/expired-token/http-response.adoc[]
+include::{snippets}/expired-token/response-fields.adoc[]
+

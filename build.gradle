@@ -45,6 +45,9 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    // BCrypt
+    implementation 'org.mindrot:jbcrypt:0.4'
+
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
@@ -52,9 +55,6 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.2'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.2'
     implementation 'io.jsonwebtoken:jjwt-api:0.12.2'
-
-    // Password Encoder
-    implementation 'org.mindrot:jbcrypt:0.4'
 
     // REST Docs
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
