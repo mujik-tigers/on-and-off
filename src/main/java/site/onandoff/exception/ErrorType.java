@@ -14,8 +14,7 @@ public enum ErrorType {
 	AES256_SETTING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "AES256 관련 잘못된 설정을 하였습니다"),
 
 	// Member
-	MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 사용자입니다"),
-	PASSWORD_NOT_MATCHED(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다");
+	MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 사용자입니다");
 
 	private final HttpStatus status;
 	private final String message;

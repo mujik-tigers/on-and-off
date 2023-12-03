@@ -44,6 +44,11 @@ public class Member extends EntityHistory {
 		return true;
 	}
 
+	public boolean modifyPassword(String newPassword) {
+		this.password = newPassword;
+		return true;
+	}
+
 	public Long getId() {
 		return id;
 	}

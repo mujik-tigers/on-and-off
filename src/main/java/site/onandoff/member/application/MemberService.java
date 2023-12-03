@@ -13,6 +13,7 @@ import site.onandoff.member.dto.ModifiedMember;
 import site.onandoff.member.dto.SignUpSuccessResponse;
 import site.onandoff.member.dto.UniqueNicknameChangeForm;
 import site.onandoff.member.dto.UniqueSignUpForm;
+import site.onandoff.member.dto.ValidPasswordChangeForm;
 import site.onandoff.member.infrastructure.MemberRepository;
 import site.onandoff.util.encryption.AES256Manager;
 import site.onandoff.util.encryption.BCryptManager;
@@ -44,6 +45,14 @@ public class MemberService {
 	public ModifiedMember modifyNickname(@Valid UniqueNicknameChangeForm nicknameChangeForm) {
 		Member member = memberRepository.findById(nicknameChangeForm.getId()).orElseThrow(MemberNotFoundException::new);
 		member.modifyNickname(nicknameChangeForm.getNickname());
+
+		return new ModifiedMember(member.getId(), member.getNickname());
+	}
+
+	@Transactional
+	public ModifiedMember modifyPassword(@Valid ValidPasswordChangeForm passwordChangeForm) {
+		Member member = memberRepository.findById(passwordChangeForm.getId()).orElseThrow(MemberNotFoundException::new);
+		member.modifyPassword(BCryptManager.encrypt(passwordChangeForm.getNewPassword()));
 
 		return new ModifiedMember(member.getId(), member.getNickname());
 	}
