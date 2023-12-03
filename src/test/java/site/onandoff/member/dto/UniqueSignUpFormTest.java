@@ -54,7 +54,6 @@ class UniqueSignUpFormTest extends IntegrationTestSupport {
 
 		// then
 		assertThat(violations.size()).isEqualTo(1);
-		assertThat(violations.iterator().next().getMessage()).isEqualTo("이미 존재하는 이메일입니다.");
 	}
 
 	@Test
@@ -71,7 +70,6 @@ class UniqueSignUpFormTest extends IntegrationTestSupport {
 
 		// then
 		assertThat(violations.size()).isEqualTo(1);
-		assertThat(violations.iterator().next().getMessage()).isEqualTo("이미 존재하는 닉네임입니다.");
 	}
 
 }

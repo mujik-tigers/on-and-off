@@ -120,7 +120,7 @@ class MemberControllerTest extends RestDocsSupport {
 		violations.add(mockedViolation);
 
 		given(mockedViolation.getPropertyPath()).willReturn(PathImpl.createPathFromString("signUp.signUpForm.email"));
-		given(mockedViolation.getMessage()).willReturn("이미 존재하는 이메일입니다.");
+		given(mockedViolation.getMessage()).willReturn("이미 사용 중인 이메일입니다");
 		given(exception.getConstraintViolations()).willReturn(violations);
 		given(memberService.signUp(any(UniqueSignUpForm.class)))
 			.willThrow(exception);
@@ -233,7 +233,7 @@ class MemberControllerTest extends RestDocsSupport {
 
 		given(mockedViolation.getPropertyPath()).willReturn(
 			PathImpl.createPathFromString("modifyNickname.NicknameChangeForm.nickname"));
-		given(mockedViolation.getMessage()).willReturn("이미 존재하는 닉네임입니다.");
+		given(mockedViolation.getMessage()).willReturn("이미 사용 중인 닉네임입니다");
 		given(exception.getConstraintViolations()).willReturn(violations);
 		given(memberService.modifyNickname(any(UniqueNicknameChangeForm.class)))
 			.willThrow(exception);

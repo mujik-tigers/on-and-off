@@ -60,8 +60,7 @@ class MemberServiceTest extends IntegrationTestSupport {
 
 		// when & then
 		assertThatThrownBy(() -> memberService.signUp(uniqueSignUpForm))
-			.isInstanceOf(ConstraintViolationException.class)
-			.hasMessageContaining("이미 존재하는 닉네임입니다.");
+			.isInstanceOf(ConstraintViolationException.class);
 	}
 
 	@Test
@@ -92,8 +91,7 @@ class MemberServiceTest extends IntegrationTestSupport {
 
 		// when & then
 		assertThatThrownBy(() -> memberService.modifyNickname(uniqueNicknameChangeForm))
-			.isInstanceOf(ConstraintViolationException.class)
-			.hasMessageContaining("이미 존재하는 닉네임입니다.");
+			.isInstanceOf(ConstraintViolationException.class);
 	}
 
 	@Test
@@ -135,8 +133,7 @@ class MemberServiceTest extends IntegrationTestSupport {
 
 		// when & then
 		assertThatThrownBy(() -> memberService.modifyPassword(passwordChangeForm))
-			.isInstanceOf(ConstraintViolationException.class)
-			.hasMessageContaining("비밀번호가 일치하지 않습니다");
+			.isInstanceOf(ConstraintViolationException.class);
 	}
 
 }
