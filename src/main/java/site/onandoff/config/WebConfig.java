@@ -36,7 +36,7 @@ public class WebConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(accessTokenInterceptor)
 			.addPathPatterns("/**")
-			.excludePathPatterns("/reissue", "/login", "/docs/**");
+			.excludePathPatterns("/reissue", "/members", "/login", "/docs/**");
 		registry.addInterceptor(refreshTokenInterceptor)
 			.addPathPatterns("/reissue");
 	}
