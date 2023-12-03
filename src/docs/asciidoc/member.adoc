@@ -3,3 +3,4 @@
 
 include::api/member/signup.adoc[]
 include::api/member/modify-nickname.adoc[]
+include::api/member/modify-password.adoc[]
