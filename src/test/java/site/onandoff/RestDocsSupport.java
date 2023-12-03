@@ -3,41 +3,56 @@ package site.onandoff;
 import static org.mockito.BDDMockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import site.onandoff.exception.GlobalExceptionHandler;
-import site.onandoff.interceptor.AccessTokenInterceptor;
-import site.onandoff.interceptor.RefreshTokenInterceptor;
+import io.jsonwebtoken.Jwts;
+import site.onandoff.auth.application.AuthManager;
+import site.onandoff.auth.application.AuthService;
+import site.onandoff.auth.application.TokenManager;
+import site.onandoff.auth.presentation.AuthController;
+import site.onandoff.member.application.MemberService;
+import site.onandoff.member.presentation.MemberController;
+import site.onandoff.util.encryption.AES256Manager;
 
-@ExtendWith(RestDocumentationExtension.class)
+@WebMvcTest(controllers = {AuthController.class, MemberController.class})
+@AutoConfigureMockMvc
+@AutoConfigureRestDocs
 public abstract class RestDocsSupport {
 
+	@Autowired
 	protected MockMvc mockMvc;
-	protected ObjectMapper objectMapper = new ObjectMapper();
-	private final AccessTokenInterceptor accessTokenInterceptor = mock(AccessTokenInterceptor.class);
-	private final RefreshTokenInterceptor refreshTokenInterceptor = mock(RefreshTokenInterceptor.class);
+
+	@Autowired
+	protected ObjectMapper objectMapper;
 
 	@BeforeEach
-	void setUp(RestDocumentationContextProvider provider) throws Exception {
-		this.mockMvc = MockMvcBuilders.standaloneSetup(initController())
-			.setControllerAdvice(GlobalExceptionHandler.class)
-			.addInterceptors(accessTokenInterceptor, refreshTokenInterceptor)
-			.apply(MockMvcRestDocumentation.documentationConfiguration(provider))
-			.build();
-
-		given(accessTokenInterceptor.preHandle(any(), any(), any()))
-			.willReturn(true);
-		given(refreshTokenInterceptor.preHandle(any(), any(), any()))
-			.willReturn(true);
+	void setUp() throws Exception {
+		given(tokenManager.validateRefreshToken(any()))
+			.willReturn(Jwts.claims().add("id", 1L).build());
+		given(tokenManager.validateAccessToken(any()))
+			.willReturn(Jwts.claims().add("id", 1L).build());
 	}
 
-	protected abstract Object initController();
+	@MockBean
+	protected AuthService authService;
+
+	@MockBean
+	protected AuthManager authManager;
+
+	@MockBean
+	protected TokenManager tokenManager;
+
+	@MockBean
+	protected MemberService memberService;
+
+	@MockBean
+	protected AES256Manager aes256Manager;
 
 }

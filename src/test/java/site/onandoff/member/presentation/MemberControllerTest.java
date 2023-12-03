@@ -21,7 +21,6 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import site.onandoff.RestDocsSupport;
-import site.onandoff.member.application.MemberService;
 import site.onandoff.member.dto.ModifiedMember;
 import site.onandoff.member.dto.NicknameChangeForm;
 import site.onandoff.member.dto.PasswordChangeForm;
@@ -34,12 +33,6 @@ import site.onandoff.member.dto.ValidPasswordChangeForm;
 class MemberControllerTest extends RestDocsSupport {
 
 	private static final long MEMBER_ID = 1L;
-	private final MemberService memberService = mock(MemberService.class);
-
-	@Override
-	protected Object initController() {
-		return new MemberController(memberService);
-	}
 
 	@Test
 	@DisplayName("회원가입 성공 시, Redirect URL 과 회원이 DB에 저장될때의 pk값을 반환한다.")

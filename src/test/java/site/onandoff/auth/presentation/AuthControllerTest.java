@@ -17,7 +17,6 @@ import org.springframework.restdocs.payload.JsonFieldType;
 
 import site.onandoff.RestDocsSupport;
 import site.onandoff.auth.Account;
-import site.onandoff.auth.application.AuthService;
 import site.onandoff.auth.dto.AuthenticationTokenPair;
 import site.onandoff.auth.dto.LoginForm;
 import site.onandoff.auth.dto.ReissuedAccessToken;
@@ -27,13 +26,6 @@ import site.onandoff.exception.auth.InvalidLoginException;
 import site.onandoff.exception.auth.InvalidTokenException;
 
 class AuthControllerTest extends RestDocsSupport {
-
-	private final AuthService authService = mock(AuthService.class);
-
-	@Override
-	protected Object initController() {
-		return new AuthController(authService);
-	}
 
 	@Test
 	@DisplayName("일반 로그인 : 성공")
