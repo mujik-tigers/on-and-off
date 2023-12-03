@@ -11,6 +11,7 @@ import site.onandoff.auth.Account;
 import site.onandoff.member.application.MemberService;
 import site.onandoff.member.dto.ModifiedMember;
 import site.onandoff.member.dto.NicknameChangeForm;
+import site.onandoff.member.dto.PasswordChangeForm;
 import site.onandoff.member.dto.SignUpForm;
 import site.onandoff.member.dto.SignUpSuccessResponse;
 import site.onandoff.util.api.ApiResponse;
@@ -36,6 +37,14 @@ public class MemberController {
 		ModifiedMember modifiedMember = memberService.modifyNickname(nicknameChangeForm.toUnique(account.getId()));
 
 		return ApiResponse.ok(ResponseMessage.NICKNAME_MODIFICATION_SUCCESS.getMessage(), modifiedMember);
+	}
+
+	@PatchMapping("/members/password")
+	public ApiResponse<ModifiedMember> modifyPassword(@Login Account account,
+		@RequestBody @Valid PasswordChangeForm passwordChangeForm) {
+		ModifiedMember modifiedMember = memberService.modifyPassword(passwordChangeForm.toValid(account.getId()));
+
+		return ApiResponse.ok(ResponseMessage.PASSWORD_MODIFICATION_SUCCESS.getMessage(), modifiedMember);
 	}
 
 }
