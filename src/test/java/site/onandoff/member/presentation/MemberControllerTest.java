@@ -24,10 +24,12 @@ import site.onandoff.RestDocsSupport;
 import site.onandoff.member.application.MemberService;
 import site.onandoff.member.dto.ModifiedMember;
 import site.onandoff.member.dto.NicknameChangeForm;
+import site.onandoff.member.dto.PasswordChangeForm;
 import site.onandoff.member.dto.SignUpForm;
 import site.onandoff.member.dto.SignUpSuccessResponse;
 import site.onandoff.member.dto.UniqueNicknameChangeForm;
 import site.onandoff.member.dto.UniqueSignUpForm;
+import site.onandoff.member.dto.ValidPasswordChangeForm;
 
 class MemberControllerTest extends RestDocsSupport {
 
@@ -230,7 +232,7 @@ class MemberControllerTest extends RestDocsSupport {
 		violations.add(mockedViolation);
 
 		given(mockedViolation.getPropertyPath()).willReturn(
-			PathImpl.createPathFromString("modifyNickname.NicknameChangeForm.email"));
+			PathImpl.createPathFromString("modifyNickname.NicknameChangeForm.nickname"));
 		given(mockedViolation.getMessage()).willReturn("이미 존재하는 닉네임입니다.");
 		given(exception.getConstraintViolations()).willReturn(violations);
 		given(memberService.modifyNickname(any(UniqueNicknameChangeForm.class)))
@@ -248,6 +250,125 @@ class MemberControllerTest extends RestDocsSupport {
 				preprocessResponse(prettyPrint()),
 				requestFields(
 					fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임")
+				),
+				responseFields(
+					fieldWithPath("code").type(JsonFieldType.NUMBER).description("코드"),
+					fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
+					fieldWithPath("message").type(JsonFieldType.NULL).description("메시지"),
+					fieldWithPath("data[]").type(JsonFieldType.ARRAY).description("응답 데이터"),
+					fieldWithPath("data[].field").type(JsonFieldType.STRING).description("필드"),
+					fieldWithPath("data[].message").type(JsonFieldType.STRING).description("에러 메시지")
+				)
+			));
+	}
+
+	@Test
+	@DisplayName("비밀번호 변경 : 성공")
+	void modifyPasswordSuccess() throws Exception {
+		// given
+		Long MEMBER_ID = 1L;
+		String NICKNAME = "yeonise";
+		String PASSWORD = "yeon!123";
+		String NEW_PASSWORD = "hyeon!123";
+
+		PasswordChangeForm passwordChangeForm = new PasswordChangeForm(PASSWORD, NEW_PASSWORD);
+
+		given(memberService.modifyPassword(any(ValidPasswordChangeForm.class)))
+			.willReturn(new ModifiedMember(MEMBER_ID, NICKNAME));
+
+		// when & then
+		mockMvc.perform(patch("/members/password")
+				.header(HttpHeaders.AUTHORIZATION, "Bearer accessToken")
+				.content(objectMapper.writeValueAsString(passwordChangeForm))
+				.contentType(MediaType.APPLICATION_JSON))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.data.id").value(MEMBER_ID))
+			.andExpect(jsonPath("$.data.nickname").value(NICKNAME))
+			.andDo(document("modify-password-success",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				requestFields(
+					fieldWithPath("password").type(JsonFieldType.STRING).description("기존 비밀번호"),
+					fieldWithPath("newPassword").type(JsonFieldType.STRING).description("새로운 비밀번호")
+				),
+				responseFields(
+					fieldWithPath("code").type(JsonFieldType.NUMBER).description("코드"),
+					fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
+					fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
+					fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
+					fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("사용자 고유 식별 아이디"),
+					fieldWithPath("data.nickname").type(JsonFieldType.STRING).description("사용자 닉네임")
+				)
+			));
+	}
+
+	@Test
+	@DisplayName("비밀번호 변경 : 비밀번호 불일치 오류")
+	void modifyValidPasswordFail() throws Exception {
+		// given
+		String NOT_MATCHED_PASSWORD = "yeon!123";
+		String NEW_PASSWORD = "hyeon!123";
+		PasswordChangeForm passwordChangeForm = new PasswordChangeForm(NOT_MATCHED_PASSWORD, NEW_PASSWORD);
+
+		ConstraintViolationException exception = mock(ConstraintViolationException.class);
+		Set<ConstraintViolation<?>> violations = new HashSet<>();
+		ConstraintViolation<?> mockedViolation = mock(ConstraintViolation.class);
+		violations.add(mockedViolation);
+
+		given(mockedViolation.getPropertyPath()).willReturn(
+			PathImpl.createPathFromString("modifyPassword.PasswordChangeForm.password"));
+		given(mockedViolation.getMessage()).willReturn("비밀번호가 일치하지 않습니다");
+		given(exception.getConstraintViolations()).willReturn(violations);
+		given(memberService.modifyPassword(any(ValidPasswordChangeForm.class)))
+			.willThrow(exception);
+
+		// when & then
+		mockMvc.perform(patch("/members/password")
+				.header(HttpHeaders.AUTHORIZATION, "Bearer accessToken")
+				.content(objectMapper.writeValueAsString(passwordChangeForm))
+				.contentType(MediaType.APPLICATION_JSON))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andDo(document("modify-valid-password-fail",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				requestFields(
+					fieldWithPath("password").type(JsonFieldType.STRING).description("기존 비밀번호"),
+					fieldWithPath("newPassword").type(JsonFieldType.STRING).description("새로운 비밀번호")
+				),
+				responseFields(
+					fieldWithPath("code").type(JsonFieldType.NUMBER).description("코드"),
+					fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
+					fieldWithPath("message").type(JsonFieldType.NULL).description("메시지"),
+					fieldWithPath("data[]").type(JsonFieldType.ARRAY).description("응답 데이터"),
+					fieldWithPath("data[].field").type(JsonFieldType.STRING).description("필드"),
+					fieldWithPath("data[].message").type(JsonFieldType.STRING).description("에러 메시지")
+				)
+			));
+	}
+
+	@Test
+	@DisplayName("비밀번호 변경 : 형식 오류")
+	void modifyPasswordFail() throws Exception {
+		// given
+		String PASSWORD = "yeon!123";
+		String INVALID_NEW_PASSWORD = "thisIsWrong";
+		PasswordChangeForm passwordChangeForm = new PasswordChangeForm(PASSWORD, INVALID_NEW_PASSWORD);
+
+		// when & then
+		mockMvc.perform(patch("/members/password")
+				.header(HttpHeaders.AUTHORIZATION, "Bearer accessToken")
+				.content(objectMapper.writeValueAsString(passwordChangeForm))
+				.contentType(MediaType.APPLICATION_JSON))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andDo(document("modify-password-fail",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				requestFields(
+					fieldWithPath("password").type(JsonFieldType.STRING).description("기존 비밀번호"),
+					fieldWithPath("newPassword").type(JsonFieldType.STRING).description("새로운 비밀번호")
 				),
 				responseFields(
 					fieldWithPath("code").type(JsonFieldType.NUMBER).description("코드"),
