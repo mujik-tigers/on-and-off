@@ -18,7 +18,7 @@ import jakarta.validation.Payload;
 @Target(ElementType.FIELD)
 public @interface EmailFormatCheck {
 
-	String message() default "이메일이 양식에 맞지 않습니다.";
+	String message() default "이메일 형식이 올바르지 않거나 62자를 초과했습니다";
 
 	Class<?>[] groups() default {};
 

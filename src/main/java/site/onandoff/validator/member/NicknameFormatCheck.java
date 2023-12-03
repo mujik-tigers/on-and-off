@@ -18,7 +18,7 @@ import jakarta.validation.Payload;
 @Target(ElementType.FIELD)
 public @interface NicknameFormatCheck {
 
-	String message() default "닉네임은 한글, 영문, 숫자로 이루어진 1-10자 문자열입니다.";
+	String message() default "닉네임은 1~10자의 한글, 영문, 숫자만 사용 가능합니다";
 
 	Class<?>[] groups() default {};
 

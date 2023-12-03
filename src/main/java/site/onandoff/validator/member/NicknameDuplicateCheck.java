@@ -20,7 +20,7 @@ import site.onandoff.member.infrastructure.MemberRepository;
 @Target(ElementType.FIELD)
 public @interface NicknameDuplicateCheck {
 
-	String message() default "이미 존재하는 닉네임입니다.";
+	String message() default "이미 사용 중인 닉네임입니다";
 
 	Class<?>[] groups() default {};
 
