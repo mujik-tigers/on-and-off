@@ -5,7 +5,6 @@ import static org.mockito.BDDMockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,7 +21,6 @@ import site.onandoff.member.presentation.MemberController;
 import site.onandoff.util.encryption.AES256Manager;
 
 @WebMvcTest(controllers = {AuthController.class, MemberController.class})
-@AutoConfigureMockMvc
 @AutoConfigureRestDocs
 public abstract class RestDocsSupport {
 
