@@ -21,7 +21,7 @@ import site.onandoff.util.encryption.AES256Manager;
 @Target(ElementType.FIELD)
 public @interface EmailDuplicateCheck {
 
-	String message() default "이미 존재하는 이메일입니다.";
+	String message() default "이미 사용 중인 이메일입니다";
 
 	Class<?>[] groups() default {};
 

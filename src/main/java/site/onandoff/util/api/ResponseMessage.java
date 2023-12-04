@@ -4,6 +4,8 @@ public enum ResponseMessage {
 
 	// Member
 	SIGNUP_SUCCESS("회원가입에 성공했습니다"),
+	NICKNAME_MODIFICATION_SUCCESS("닉네임을 변경했습니다"),
+	PASSWORD_MODIFICATION_SUCCESS("비밀번호를 변경했습니다"),
 
 	// Auth
 	LOGIN_SUCCESS("로그인에 성공했습니다"),

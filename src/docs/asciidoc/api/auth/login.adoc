@@ -1,0 +1,38 @@
+[[login-success]]
+=== 일반 로그인 : 성공
+
+==== HTTP Request
+
+include::{snippets}/login-success/http-request.adoc[]
+include::{snippets}/login-success/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/login-success/http-response.adoc[]
+include::{snippets}/login-success/response-fields.adoc[]
+
+[[login-fail]]
+=== 일반 로그인 : 실패
+
+==== HTTP Request
+
+include::{snippets}/login-fail/http-request.adoc[]
+include::{snippets}/login-fail/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/login-fail/http-response.adoc[]
+include::{snippets}/login-fail/response-fields.adoc[]
+
+[[login-valid-fail]]
+=== 일반 로그인 : 입력 형식 오류
+
+==== HTTP Request
+
+include::{snippets}/login-valid-fail/http-request.adoc[]
+include::{snippets}/login-valid-fail/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/login-valid-fail/http-response.adoc[]
+include::{snippets}/login-valid-fail/response-fields.adoc[]

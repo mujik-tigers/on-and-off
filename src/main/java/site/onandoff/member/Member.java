@@ -39,8 +39,22 @@ public class Member extends EntityHistory {
 		this.provider = provider;
 	}
 
+	public boolean modifyNickname(String newNickname) {
+		this.nickname = newNickname;
+		return true;
+	}
+
+	public boolean modifyPassword(String newPassword) {
+		this.password = newPassword;
+		return true;
+	}
+
 	public Long getId() {
 		return id;
+	}
+
+	public String getNickname() {
+		return nickname;
 	}
 
 	public String getPassword() {

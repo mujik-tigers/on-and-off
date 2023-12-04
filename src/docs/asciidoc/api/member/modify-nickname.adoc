@@ -1,0 +1,38 @@
+[[modify-nickname-success]]
+=== 닉네임 변경 : 성공
+
+==== HTTP Request
+
+include::{snippets}/modify-nickname-success/http-request.adoc[]
+include::{snippets}/modify-nickname-success/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/modify-nickname-success/http-response.adoc[]
+include::{snippets}/modify-nickname-success/response-fields.adoc[]
+
+[[modify-nickname-fail]]
+=== 닉네임 변경 : 형식 오류
+
+==== HTTP Request
+
+include::{snippets}/modify-nickname-fail/http-request.adoc[]
+include::{snippets}/modify-nickname-fail/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/modify-nickname-fail/http-response.adoc[]
+include::{snippets}/modify-nickname-fail/response-fields.adoc[]
+
+[[unique-modify-nickname-fail]]
+=== 닉네임 변경 : 중복 오류
+
+==== HTTP Request
+
+include::{snippets}/unique-modify-nickname-fail/http-request.adoc[]
+include::{snippets}/unique-modify-nickname-fail/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/unique-modify-nickname-fail/http-response.adoc[]
+include::{snippets}/unique-modify-nickname-fail/response-fields.adoc[]

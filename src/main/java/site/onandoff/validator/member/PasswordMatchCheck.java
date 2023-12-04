@@ -12,21 +12,26 @@ import jakarta.validation.Constraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import jakarta.validation.Payload;
+import site.onandoff.exception.member.MemberNotFoundException;
+import site.onandoff.member.Member;
+import site.onandoff.member.dto.ValidPasswordChangeForm;
 import site.onandoff.member.infrastructure.MemberRepository;
+import site.onandoff.util.encryption.BCryptManager;
 
 @Documented
-@Constraint(validatedBy = NicknameDuplicateCheck.NicknameDuplicateValidator.class)
+@Constraint(validatedBy = PasswordMatchCheck.PasswordMatchValidator.class)
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface NicknameDuplicateCheck {
+@Target(ElementType.TYPE)
+public @interface PasswordMatchCheck {
 
-	String message() default "이미 사용 중인 닉네임입니다";
+	String message() default "비밀번호가 일치하지 않습니다";
 
 	Class<?>[] groups() default {};
 
 	Class<? extends Payload>[] payload() default {};
 
-	class NicknameDuplicateValidator implements ConstraintValidator<NicknameDuplicateCheck, String> {
+	class PasswordMatchValidator implements ConstraintValidator<PasswordMatchCheck, ValidPasswordChangeForm> {
+
 		private MemberRepository memberRepository;
 
 		@Autowired
@@ -35,9 +40,13 @@ public @interface NicknameDuplicateCheck {
 		}
 
 		@Override
-		public boolean isValid(String nicknameInput, ConstraintValidatorContext context) {
-			return !memberRepository.existsByNickname(nicknameInput);
+		public boolean isValid(ValidPasswordChangeForm passwordChangeForm, ConstraintValidatorContext context) {
+			Member member = memberRepository.findById(passwordChangeForm.getId())
+				.orElseThrow(MemberNotFoundException::new);
+
+			return BCryptManager.isMatch(passwordChangeForm.getPassword(), member.getPassword());
 		}
 
 	}
+
 }

@@ -1,0 +1,38 @@
+[[signup-success]]
+=== 회원 가입 : 성공
+
+==== HTTP Request
+
+include::{snippets}/signup-success/http-request.adoc[]
+include::{snippets}/signup-success/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/signup-success/http-response.adoc[]
+include::{snippets}/signup-success/response-fields.adoc[]
+
+[[signup-fail]]
+=== 회원 가입 : 실패
+
+==== HTTP Request
+
+include::{snippets}/signup-fail/http-request.adoc[]
+include::{snippets}/signup-fail/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/signup-fail/http-response.adoc[]
+include::{snippets}/signup-fail/response-fields.adoc[]
+
+[[unique-signup-fail]]
+=== 회원 가입 : 중복 회원 오류
+
+==== HTTP Request
+
+include::{snippets}/unique-signup-fail/http-request.adoc[]
+include::{snippets}/unique-signup-fail/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/unique-signup-fail/http-response.adoc[]
+include::{snippets}/unique-signup-fail/response-fields.adoc[]

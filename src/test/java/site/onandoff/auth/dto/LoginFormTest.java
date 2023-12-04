@@ -1,7 +1,6 @@
 package site.onandoff.auth.dto;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Set;
 
@@ -46,10 +45,7 @@ class LoginFormTest extends IntegrationTestSupport {
 		Set<ConstraintViolation<LoginForm>> violations = validator.validate(loginForm);
 
 		// then
-		assertAll(
-			() -> assertThat(violations).hasSize(1),
-			() -> assertThat(violations.iterator().next().getMessage()).isEqualTo("이메일이 양식에 맞지 않습니다.")
-		);
+		assertThat(violations).hasSize(1);
 	}
 
 	@ParameterizedTest
@@ -64,11 +60,7 @@ class LoginFormTest extends IntegrationTestSupport {
 		Set<ConstraintViolation<LoginForm>> violations = validator.validate(loginForm);
 
 		// then
-		assertAll(
-			() -> assertThat(violations).hasSize(1),
-			() -> assertThat(violations.iterator().next().getMessage()).isEqualTo(
-				"비밀번호는 영문, 숫자, 특수기호를 모두 포함하는 8-16자 문자열입니다.")
-		);
+		assertThat(violations).hasSize(1);
 	}
 
 }

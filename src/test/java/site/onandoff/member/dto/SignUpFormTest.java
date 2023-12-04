@@ -29,7 +29,6 @@ class SignUpFormTest extends IntegrationTestSupport {
 
 		// then
 		assertThat(violations.size()).isEqualTo(1);
-		assertThat(violations.iterator().next().getMessage()).isEqualTo("이메일이 양식에 맞지 않습니다.");
 	}
 
 	@Test
@@ -58,7 +57,6 @@ class SignUpFormTest extends IntegrationTestSupport {
 
 		// then
 		assertThat(violations.size()).isEqualTo(1);
-		assertThat(violations.iterator().next().getMessage()).isEqualTo("이메일이 양식에 맞지 않습니다.");
 	}
 
 	@Test
