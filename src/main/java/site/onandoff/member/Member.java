@@ -9,11 +9,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import site.onandoff.util.EntityHistory;
+import site.onandoff.util.BaseTimeEntity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member extends EntityHistory {
+public class Member extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,6 @@ public class Member extends EntityHistory {
 	private Provider provider;
 
 	public Member(String email, String nickname, String password, Provider provider) {
-		super(nickname);
 		this.email = email;
 		this.nickname = nickname;
 		this.password = password;

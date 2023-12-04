@@ -374,4 +374,43 @@ class MemberControllerTest extends RestDocsSupport {
 			));
 	}
 
+	@Test
+	@DisplayName("회원탈퇴 : 성공")
+	void deleteMemberSuccess() throws Exception {
+		// when & then
+		mockMvc.perform(delete("/members")
+				.header(HttpHeaders.AUTHORIZATION, "Bearer accessToken"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andDo(document("member-delete-success",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				responseFields(
+					fieldWithPath("code").type(JsonFieldType.NUMBER).description("코드"),
+					fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
+					fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
+					fieldWithPath("data").type(JsonFieldType.NULL).description("응답 데이터")
+				)
+			));
+	}
+
+	@Test
+	@DisplayName("회원탈퇴 : 실패")
+	void deleteMemberFail() throws Exception {
+		// when & then
+		mockMvc.perform(delete("/members"))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andDo(document("member-delete-fail",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				responseFields(
+					fieldWithPath("code").type(JsonFieldType.NUMBER).description("코드"),
+					fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
+					fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
+					fieldWithPath("data").type(JsonFieldType.NULL).description("응답 데이터")
+				)
+			));
+	}
+
 }

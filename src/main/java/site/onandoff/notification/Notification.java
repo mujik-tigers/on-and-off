@@ -13,13 +13,13 @@ import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import site.onandoff.member.Member;
-import site.onandoff.util.EntityHistory;
+import site.onandoff.util.BaseTimeEntity;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class Notification extends EntityHistory {
+public abstract class Notification extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

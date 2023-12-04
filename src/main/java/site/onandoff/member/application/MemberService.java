@@ -19,7 +19,7 @@ import site.onandoff.util.encryption.AES256Manager;
 import site.onandoff.util.encryption.BCryptManager;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @Validated
 @RequiredArgsConstructor
 public class MemberService {
@@ -27,7 +27,6 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 	private final AES256Manager aes256Manager;
 
-	@Transactional
 	public SignUpSuccessResponse signUp(@Valid UniqueSignUpForm signUpForm) {
 		Member newMember = new Member(
 			aes256Manager.encrypt(signUpForm.getEmail()),
@@ -41,20 +40,28 @@ public class MemberService {
 		return new SignUpSuccessResponse(savedMember.getId());
 	}
 
-	@Transactional
 	public ModifiedMember modifyNickname(@Valid UniqueNicknameChangeForm nicknameChangeForm) {
-		Member member = memberRepository.findById(nicknameChangeForm.getId()).orElseThrow(MemberNotFoundException::new);
+		Member member = findMemberBy(nicknameChangeForm.getId());
 		member.modifyNickname(nicknameChangeForm.getNickname());
 
 		return new ModifiedMember(member.getId(), member.getNickname());
 	}
 
-	@Transactional
 	public ModifiedMember modifyPassword(@Valid ValidPasswordChangeForm passwordChangeForm) {
-		Member member = memberRepository.findById(passwordChangeForm.getId()).orElseThrow(MemberNotFoundException::new);
+		Member member = findMemberBy(passwordChangeForm.getId());
 		member.modifyPassword(BCryptManager.encrypt(passwordChangeForm.getNewPassword()));
 
 		return new ModifiedMember(member.getId(), member.getNickname());
+	}
+
+	public void deleteMember(Long memberId) {
+		Member member = findMemberBy(memberId);
+		memberRepository.delete(member);
+	}
+
+	private Member findMemberBy(Long id) {
+		return memberRepository.findById(id)
+			.orElseThrow(MemberNotFoundException::new);
 	}
 
 }

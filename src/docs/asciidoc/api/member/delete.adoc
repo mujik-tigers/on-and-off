@@ -1,0 +1,23 @@
+[[member-delete-success]]
+=== 회원 탈퇴 : 성공
+
+==== HTTP Request
+
+include::{snippets}/member-delete-success/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/member-delete-success/http-response.adoc[]
+include::{snippets}/member-delete-success/response-fields.adoc[]
+
+[[member-delete-fail]]
+=== 회원 탈퇴 : 실패
+
+==== HTTP Request
+
+include::{snippets}/member-delete-fail/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/member-delete-fail/http-response.adoc[]
+include::{snippets}/member-delete-fail/response-fields.adoc[]

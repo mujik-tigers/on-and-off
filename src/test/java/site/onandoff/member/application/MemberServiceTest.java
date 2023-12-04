@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import jakarta.validation.ConstraintViolationException;
 import site.onandoff.IntegrationTestSupport;
+import site.onandoff.exception.member.MemberNotFoundException;
 import site.onandoff.member.Member;
 import site.onandoff.member.Provider;
 import site.onandoff.member.dto.ModifiedMember;
@@ -134,6 +135,35 @@ class MemberServiceTest extends IntegrationTestSupport {
 		// when & then
 		assertThatThrownBy(() -> memberService.modifyPassword(passwordChangeForm))
 			.isInstanceOf(ConstraintViolationException.class);
+	}
+
+	@Test
+	@DisplayName("회원은 자신의 id를 사용해, 회원 탈퇴할 수 있습니다.")
+	void deleteMemberSuccess() throws Exception {
+		// given
+		Member member = new Member("ghkdgus29@naver.com", "hyun", "1234567a!", Provider.LOCAL);
+		memberRepository.save(member);
+
+		// when
+		memberService.deleteMember(member.getId());
+
+		// then
+		List<Member> members = memberRepository.findAll();
+		assertThat(members.size()).isEqualTo(0);
+	}
+
+	@Test
+	@DisplayName("이미 탈퇴한 회원의 id가 담긴 AccessToken 을 사용해, 다시 탈퇴하려고 하면 예외가 발생합니다.")
+	void deleteMemberFail() throws Exception {
+		// given
+		Member member = new Member("ghkdgus29@naver.com", "hyun", "1234567a!", Provider.LOCAL);
+		memberRepository.save(member);
+		memberRepository.delete(member);
+
+		// when & then
+		assertThatThrownBy(() -> memberService.deleteMember(member.getId()))
+			.isInstanceOf(MemberNotFoundException.class);
+
 	}
 
 }
