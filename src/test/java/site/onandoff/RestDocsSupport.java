@@ -32,14 +32,6 @@ public abstract class RestDocsSupport {
 	@Autowired
 	protected ObjectMapper objectMapper;
 
-	@BeforeEach
-	void setUp() throws Exception {
-		given(tokenManager.validateRefreshToken(any()))
-			.willReturn(Jwts.claims().add("id", 1L).build());
-		given(tokenManager.validateAccessToken(any()))
-			.willReturn(Jwts.claims().add("id", 1L).build());
-	}
-
 	@MockBean
 	protected AuthService authService;
 
@@ -54,5 +46,13 @@ public abstract class RestDocsSupport {
 
 	@MockBean
 	protected AES256Manager aes256Manager;
+
+	@BeforeEach
+	void setUp() {
+		given(tokenManager.validateRefreshToken(any()))
+			.willReturn(Jwts.claims().add("id", 1L).build());
+		given(tokenManager.validateAccessToken(any()))
+			.willReturn(Jwts.claims().add("id", 1L).build());
+	}
 
 }
