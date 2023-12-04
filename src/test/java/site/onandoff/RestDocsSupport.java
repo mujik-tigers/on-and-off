@@ -51,6 +51,9 @@ public abstract class RestDocsSupport {
 			.willReturn(Jwts.claims().add("id", 1L).build());
 		given(tokenManager.validateAccessToken(any()))
 			.willReturn(Jwts.claims().add("id", 1L).build());
+
+		given(authManager.validateAuthorizationHeader(any()))
+			.willCallRealMethod();
 	}
 
 }
