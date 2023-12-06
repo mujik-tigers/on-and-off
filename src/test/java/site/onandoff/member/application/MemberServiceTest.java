@@ -14,6 +14,7 @@ import site.onandoff.IntegrationTestSupport;
 import site.onandoff.exception.member.MemberNotFoundException;
 import site.onandoff.member.Member;
 import site.onandoff.member.Provider;
+import site.onandoff.member.dto.MemberProfile;
 import site.onandoff.member.dto.ModifiedMember;
 import site.onandoff.member.dto.NicknameChangeForm;
 import site.onandoff.member.dto.SignUpForm;
@@ -22,6 +23,7 @@ import site.onandoff.member.dto.UniqueNicknameChangeForm;
 import site.onandoff.member.dto.UniqueSignUpForm;
 import site.onandoff.member.dto.ValidPasswordChangeForm;
 import site.onandoff.member.infrastructure.MemberRepository;
+import site.onandoff.util.encryption.AES256Manager;
 import site.onandoff.util.encryption.BCryptManager;
 
 class MemberServiceTest extends IntegrationTestSupport {
@@ -31,6 +33,9 @@ class MemberServiceTest extends IntegrationTestSupport {
 
 	@Autowired
 	private MemberRepository memberRepository;
+
+	@Autowired
+	private AES256Manager aes256Manager;
 
 	@Test
 	@DisplayName("회원가입 성공 시, 저장된 멤버의 PK를 담는 SignUpSuccessResponse 를 반환한다.")
@@ -138,7 +143,7 @@ class MemberServiceTest extends IntegrationTestSupport {
 	}
 
 	@Test
-	@DisplayName("회원은 자신의 id를 사용해, 회원 탈퇴할 수 있습니다.")
+	@DisplayName("회원은 자신의 id를 사용해, 회원 탈퇴할 수 있다.")
 	void deleteMemberSuccess() throws Exception {
 		// given
 		Member member = new Member("ghkdgus29@naver.com", "hyun", "1234567a!", Provider.LOCAL);
@@ -153,7 +158,7 @@ class MemberServiceTest extends IntegrationTestSupport {
 	}
 
 	@Test
-	@DisplayName("이미 탈퇴한 회원의 id가 담긴 AccessToken 을 사용해, 다시 탈퇴하려고 하면 예외가 발생합니다.")
+	@DisplayName("이미 탈퇴한 회원의 id가 담긴 AccessToken 을 사용해, 다시 탈퇴하려고 하면 예외가 발생한다.")
 	void deleteMemberFail() throws Exception {
 		// given
 		Member member = new Member("ghkdgus29@naver.com", "hyun", "1234567a!", Provider.LOCAL);
@@ -164,6 +169,38 @@ class MemberServiceTest extends IntegrationTestSupport {
 		assertThatThrownBy(() -> memberService.deleteMember(member.getId()))
 			.isInstanceOf(MemberNotFoundException.class);
 
+	}
+
+	@Test
+	@DisplayName("회원은 자신의 id를 사용해, 자신의 회원 정보 (이메일과 닉네임) 를 조회할 수 있다.")
+	void fetchMemberProfileSuccess() throws Exception {
+		// given
+		String GIVEN_EMAIL = "ghkdgus29@naver.com";
+		String GIVEN_NICKNAME = "hyun";
+		Member member = new Member(aes256Manager.encrypt(GIVEN_EMAIL), GIVEN_NICKNAME, "1234567a!", Provider.LOCAL);
+		memberRepository.save(member);
+
+		// when
+		MemberProfile memberProfile = memberService.fetchMemberInformation(member.getId());
+
+		// then
+		assertThat(memberProfile.getEmail()).isEqualTo(GIVEN_EMAIL);
+		assertThat(memberProfile.getNickname()).isEqualTo(GIVEN_NICKNAME);
+	}
+
+	@Test
+	@DisplayName("이미 탈퇴한 회원의 id가 담긴 AccessToken 을 사용해, 회원 정보를 조회하려고 하면 예외가 발생한다.")
+	void fetchMemberProfileFail() throws Exception {
+		// given
+		String GIVEN_EMAIL = "ghkdgus29@naver.com";
+		String GIVEN_NICKNAME = "hyun";
+		Member member = new Member(aes256Manager.encrypt(GIVEN_EMAIL), GIVEN_NICKNAME, "1234567a!", Provider.LOCAL);
+		memberRepository.save(member);
+		memberRepository.delete(member);
+
+		// when & then
+		assertThatThrownBy(() -> memberService.fetchMemberInformation(member.getId()))
+			.isInstanceOf(MemberNotFoundException.class);
 	}
 
 }

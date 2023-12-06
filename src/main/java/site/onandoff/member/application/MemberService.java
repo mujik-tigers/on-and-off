@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import site.onandoff.exception.member.MemberNotFoundException;
 import site.onandoff.member.Member;
 import site.onandoff.member.Provider;
+import site.onandoff.member.dto.MemberProfile;
 import site.onandoff.member.dto.ModifiedMember;
 import site.onandoff.member.dto.SignUpSuccessResponse;
 import site.onandoff.member.dto.UniqueNicknameChangeForm;
@@ -57,6 +58,12 @@ public class MemberService {
 	public void deleteMember(Long memberId) {
 		Member member = findMemberBy(memberId);
 		memberRepository.delete(member);
+	}
+
+	public MemberProfile fetchMemberInformation(Long memberId) {
+		Member member = findMemberBy(memberId);
+		String decryptedMemberEmail = aes256Manager.decrypt(member.getEmail());
+		return new MemberProfile(decryptedMemberEmail, member.getNickname());
 	}
 
 	private Member findMemberBy(Long id) {

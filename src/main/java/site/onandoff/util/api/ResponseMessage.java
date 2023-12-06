@@ -7,6 +7,7 @@ public enum ResponseMessage {
 	NICKNAME_MODIFICATION_SUCCESS("닉네임을 변경했습니다"),
 	PASSWORD_MODIFICATION_SUCCESS("비밀번호를 변경했습니다"),
 	MEMBER_DELETE_SUCCESS("회원탈퇴에 성공했습니다"),
+	MEMBER_PROFILE_FIND_SUCCESS("회원정보 조회에 성공했습니다"),
 
 	// Auth
 	LOGIN_SUCCESS("로그인에 성공했습니다"),

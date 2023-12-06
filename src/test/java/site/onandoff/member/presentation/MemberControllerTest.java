@@ -21,6 +21,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import site.onandoff.RestDocsSupport;
+import site.onandoff.member.dto.MemberProfile;
 import site.onandoff.member.dto.ModifiedMember;
 import site.onandoff.member.dto.NicknameChangeForm;
 import site.onandoff.member.dto.PasswordChangeForm;
@@ -409,6 +410,37 @@ class MemberControllerTest extends RestDocsSupport {
 					fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
 					fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
 					fieldWithPath("data").type(JsonFieldType.NULL).description("응답 데이터")
+				)
+			));
+	}
+
+	@Test
+	@DisplayName("회원정보 조회 : 성공")
+	void findMemberProfileSuccess() throws Exception {
+		// given
+		String GIVEN_EMAIL = "ghkdgus29@naver.com";
+		String GIVEN_NICKNAME = "hyun";
+
+		given(memberService.fetchMemberInformation(any(Long.class)))
+			.willReturn(new MemberProfile(GIVEN_EMAIL, GIVEN_NICKNAME));
+
+		// when & then
+		mockMvc.perform(get("/members")
+				.header(HttpHeaders.AUTHORIZATION, "Bearer accessToken ..."))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.data.email").value(GIVEN_EMAIL))
+			.andExpect(jsonPath("$.data.nickname").value(GIVEN_NICKNAME))
+			.andDo(document("member-find-success",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				responseFields(
+					fieldWithPath("code").type(JsonFieldType.NUMBER).description("코드"),
+					fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
+					fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
+					fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
+					fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
+					fieldWithPath("data.nickname").type(JsonFieldType.STRING).description("닉네임")
 				)
 			));
 	}

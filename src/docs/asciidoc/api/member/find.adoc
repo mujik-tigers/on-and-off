@@ -1,0 +1,12 @@
+[[member-find-success]]
+=== 회원정보 조회 : 성공
+
+==== HTTP Request
+
+include::{snippets}/member-find-success/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/member-find-success/http-response.adoc[]
+include::{snippets}/member-find-success/response-fields.adoc[]
+

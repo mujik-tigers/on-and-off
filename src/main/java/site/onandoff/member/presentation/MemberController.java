@@ -1,6 +1,7 @@
 package site.onandoff.member.presentation;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import site.onandoff.auth.Account;
 import site.onandoff.member.application.MemberService;
+import site.onandoff.member.dto.MemberProfile;
 import site.onandoff.member.dto.ModifiedMember;
 import site.onandoff.member.dto.NicknameChangeForm;
 import site.onandoff.member.dto.PasswordChangeForm;
@@ -52,6 +54,12 @@ public class MemberController {
 	public ApiResponse<Void> deleteMember(@Login Account account) {
 		memberService.deleteMember(account.getId());
 		return ApiResponse.ok(ResponseMessage.MEMBER_DELETE_SUCCESS.getMessage(), null);
+	}
+
+	@GetMapping("/members")
+	public ApiResponse<MemberProfile> fetchMemberInformation(@Login Account account) {
+		MemberProfile memberProfile = memberService.fetchMemberInformation(account.getId());
+		return ApiResponse.ok(ResponseMessage.MEMBER_PROFILE_FIND_SUCCESS.getMessage(), memberProfile);
 	}
 
 }
