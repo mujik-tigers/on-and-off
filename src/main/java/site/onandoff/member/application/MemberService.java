@@ -60,6 +60,7 @@ public class MemberService {
 		memberRepository.delete(member);
 	}
 
+	@Transactional(readOnly = true)
 	public MemberProfile fetchMemberInformation(Long memberId) {
 		Member member = findMemberBy(memberId);
 		String decryptedMemberEmail = aes256Manager.decrypt(member.getEmail());
