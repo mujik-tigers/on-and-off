@@ -8,11 +8,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import site.onandoff.util.BaseTimeEntity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Member extends BaseTimeEntity {
 
 	@Id
@@ -48,16 +50,5 @@ public class Member extends BaseTimeEntity {
 		return true;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public String getNickname() {
-		return nickname;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
 }
+
